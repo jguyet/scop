@@ -27,4 +27,15 @@
 #   include <SDL2/SDL.h>
 # endif
 
+# include <stdlib.h>
+
+typedef struct	s_scop
+{
+
+}				t_scop;
+
+t_scop				*new_scop(void);
+t_scop				*static_scop(void);
+void				destruct_scop(t_scop *scop);
+
 #endif
