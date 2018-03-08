@@ -124,6 +124,7 @@ BOOLEAN				ft_is_string_printable(char *str);
 BOOLEAN				ft_is_string_numeric(char *str);
 BOOLEAN				ft_strcontains(char const *src, char const *srh);
 char				*ft_ftoa(double n, long prec);
+char				*file_get_contents(char *filename);
 
 /*
 ** LST
@@ -161,14 +162,6 @@ void				ft_qsort(void *base, size_t mmemb, char *type,\
 					int(*compar)(const void *, const void *));
 size_t				array_length(char **array);
 void				free_array(char **array);
-
-/*
-** Utils
-*/
-# define TIME_SEC 500000000
-# define TIME_MILLIS (TIME_SEC / 1000)
-
-void				ft_sleep(int millis);
 
 # define ___N0		STDERR_FILENO, "{bold}{red}ERROR{white} %s:%i:{reset}\t"
 # define ___N1		__FILE__, __LINE__

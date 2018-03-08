@@ -46,5 +46,8 @@ void				destruct_scop(t_scop *scop);
 
 void				build_window(t_scop *s);
 void				build_context(t_scop *s);
+void				render_loop(t_scop *s);
+void				destruct_context(t_scop *s);
+void				destruct_window(t_scop *s);
 
 #endif

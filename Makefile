@@ -57,7 +57,8 @@ INCDIRLIBFTX	=	$(LIBFTXDIR)/includes/
 SRCSPROG1		=	\
 					srcs/scop/scop.c											\
 					srcs/scop/window.c											\
-					srcs/scop/context.c
+					srcs/scop/context.c											\
+					srcs/scop/loop.c
 
 DSRCSPROG1		=	$(addprefix $(SRCDIR), $(SRCSPROG1))
 

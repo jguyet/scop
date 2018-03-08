@@ -27,3 +27,8 @@ void				build_window(t_scop	*s)
 		exit(0);
 	}
 }
+
+void				destruct_window(t_scop *s)
+{
+	SDL_DestroyWindow(s->window);
+}

@@ -90,7 +90,6 @@ SRCBASE		=	\
 				array/ft_qsort.c							\
 				array/array_length.c						\
 				array/free_array.c							\
-				utils/ft_sleep.c							\
 				list/ft_lstaddend.c							\
 				list/ft_lstsplit.c							\
 				list/ft_putlst.c							\
@@ -119,6 +118,7 @@ SRCBASE		=	\
 				string/ft_is_string_numeric.c				\
 				string/ft_strcontains.c 					\
 				string/ft_ftoa.c 							\
+				string/file_get_contents.c 					\
 				printf/add/add_char.c						\
 				printf/add/add_string.c						\
 				printf/add/add_wchar.c						\

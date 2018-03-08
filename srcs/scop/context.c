@@ -30,3 +30,8 @@ void				build_context(t_scop *s)
 	glEnable(GL_MULTISAMPLE);
 	SDL_GL_SetSwapInterval(0);
 }
+
+void				destruct_context(t_scop *s)
+{
+	SDL_GL_DeleteContext(s->context);
+}

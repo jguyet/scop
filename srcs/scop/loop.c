@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_sleep.c                                         :+:      :+:    :+:   */
+/*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jguyet <jguyet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/19 04:21:18 by jguyet            #+#    #+#             */
-/*   Updated: 2017/03/19 04:25:42 by jguyet           ###   ########.fr       */
+/*   Created: 2018/03/08 13:19:12 by jguyet            #+#    #+#             */
+/*   Updated: 2018/03/08 13:21:27 by jguyet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "scop.h"
 
-void	ft_sleep(int millis)
+void			render_loop(t_scop *s)
 {
-	long long int	i;
-	int				retry;
-
-	retry = 0;
 	while (1)
 	{
-		i = 0;
-		retry++;
-		while (i < (TIME_MILLIS * millis))
+		SDL_GL_SwapWindow(s->window);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		SDL_Event	event;
+		while(SDL_PollEvent(&event))
 		{
-			i++;
+			if(event.type == SDL_QUIT)
+			{
+				return ;
+			}
 		}
-		if (retry == 1)
-			break ;
 	}
 }
