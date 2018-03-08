@@ -55,7 +55,9 @@ LIBFTXDIR		=	libftx/
 INCDIRLIBFTX	=	$(LIBFTXDIR)/includes/
 
 SRCSPROG1		=	\
-					srcs/scop.c
+					srcs/scop/scop.c											\
+					srcs/scop/window.c											\
+					srcs/scop/context.c
 
 DSRCSPROG1		=	$(addprefix $(SRCDIR), $(SRCSPROG1))
 

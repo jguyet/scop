@@ -13,6 +13,10 @@
 #ifndef SCOP_H
 # define SCOP_H
 
+# if __APPLE__
+#  define GLFW_INCLUDE_GLCOREARB
+# endif
+
 # include <libft.h>
 # include <printf.h>
 # include <libftx.h>
@@ -29,13 +33,18 @@
 
 # include <stdlib.h>
 
-typedef struct	s_scop
+typedef struct		s_scop
 {
-
-}				t_scop;
+	SDL_Window		*window;
+	SDL_GLContext	*context;
+}					t_scop;
 
 t_scop				*new_scop(void);
 t_scop				*static_scop(void);
 void				destruct_scop(t_scop *scop);
+
+
+void				build_window(t_scop *s);
+void				build_context(t_scop *s);
 
 #endif
