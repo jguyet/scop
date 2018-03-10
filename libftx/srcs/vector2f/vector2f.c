@@ -26,6 +26,13 @@ t_vector2f		*new_vector2f(float x, float y)
 	return (v);
 }
 
+t_vector2f		*initialize_vector2f(t_vector2f *v)
+{
+	v->x = 0.f;
+	v->y = 0.f;
+	return (v);
+}
+
 void			destruct_vector2f(t_vector2f *v)
 {
 	free(v);

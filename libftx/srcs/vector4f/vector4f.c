@@ -28,6 +28,15 @@ t_vector4f		*new_vector4f(float x, float y, float z, float w)
 	return (v);
 }
 
+t_vector4f		*initialize_vector4f(t_vector4f *v)
+{
+	v->x = 0.f;
+	v->y = 0.f;
+	v->z = 0.f;
+	v->w = 0.f;
+	return (v);
+}
+
 void			destruct_vector4f(t_vector4f *v)
 {
 	free(v);

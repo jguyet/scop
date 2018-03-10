@@ -33,19 +33,88 @@
 
 # include <stdlib.h>
 
+# include "glewglew.h"
+
+typedef struct		s_shader
+{
+	unsigned int	id;
+}					t_shader;
+
+typedef struct		s_model
+{
+	t_shader		*shader;
+	t_glewglew		*glewglew;
+}					t_model;
+
+typedef struct		s_keyboard
+{
+	void			(*handle_event)(struct s_keyboard*, SDL_Event *);
+	BOOLEAN			pressedKeys[301];
+}					t_keyboard;
+
+typedef struct		s_mouse
+{
+	t_vector2f		position;
+	t_vector2f		lastPosition;
+	void			(*handle_motion_event)(struct s_mouse*, SDL_Event *);
+	void			(*handle_button_event)(struct s_mouse*, SDL_Event *);
+	BOOLEAN			pressedButton[8];
+}					t_mouse;
+
 typedef struct		s_scop
 {
 	SDL_Window		*window;
 	SDL_GLContext	*context;
+	t_hashmap		*models;
+	t_hashmap		*shaders;
+	t_mouse			*mouse;
+	t_keyboard		*keyboard;
 }					t_scop;
 
+/*
+** SHADERS
+*/
+t_shader			*new_shader(const char * vertex_file_path, const char * fragment_file_path);
+unsigned int		loadShaders(const char * vertex_file_path,const char * fragment_file_path);
+
+/*
+**	MODELS
+*/
+t_model				*new_model(const char *file_path, t_shader *shader);
+void				destruct_model(t_model *model);
+
+/*
+** MOUSE
+*/
+t_mouse				*new_mouse(void);
+void				destruct_mouse(t_mouse *mouse);
+BOOLEAN				get_button(t_mouse *mouse, unsigned int button);
+void				mouse_motion_event_handler(t_mouse *mouse, SDL_Event *event);
+void				mouse_button_event_handler(t_mouse *mouse, SDL_Event *event);
+
+/*
+** KEYBOARD
+*/
+t_keyboard			*new_keyboard(void);
+void				destruct_keyboard(t_keyboard *keyboard);
+BOOLEAN				get_key(t_keyboard *keyboard, unsigned int key);
+void				keyboard_event_handler(t_keyboard *keyboard, SDL_Event *event);
+
+/*
+** SCOP
+*/
 t_scop				*new_scop(void);
 t_scop				*static_scop(void);
 void				destruct_scop(t_scop *scop);
 
-
+/*
+** SCOP PROGRAMME
+*/
 void				build_window(t_scop *s);
 void				build_context(t_scop *s);
+void				load_models(t_scop *scop);
+void				load_shaders(t_scop *scop);
+void				load_inputs(t_scop *scop);
 void				render_loop(t_scop *s);
 void				destruct_context(t_scop *s);
 void				destruct_window(t_scop *s);

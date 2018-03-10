@@ -32,6 +32,7 @@ SRCBASE		=	\
 				mathf/ft_radians.c						\
 				mathf/ft_clamp.c						\
 				matrix4f/matrix4f.c						\
+				matrix4f/rotate.c						\
 				vector2f/vector2f.c						\
 				vector3f/vector3f.c						\
 				vector4f/vector4f.c						\

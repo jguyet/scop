@@ -90,6 +90,7 @@ SRCBASE		=	\
 				array/ft_qsort.c							\
 				array/array_length.c						\
 				array/free_array.c							\
+				array/free_array_type.c						\
 				list/ft_lstaddend.c							\
 				list/ft_lstsplit.c							\
 				list/ft_putlst.c							\

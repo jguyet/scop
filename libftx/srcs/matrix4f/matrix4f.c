@@ -17,12 +17,19 @@
 
 t_matrix4f		*new_matrix4f(void)
 {
-	int			x;
-	int			y;
 	t_matrix4f	*m;
 
 	if (!(m = (t_matrix4f*)malloc(sizeof(struct s_matrix4f))))
 		return (NULL);
+	initialize_matrix4f(m);
+	return (m);
+}
+
+t_matrix4f		*initialize_matrix4f(t_matrix4f *m)
+{
+	int			x;
+	int			y;
+
 	x = 0;
 	while (x < 4)
 	{

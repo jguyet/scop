@@ -20,16 +20,19 @@ t_transform	*new_transform(void)
 
 	if (!(t = (t_transform*)malloc(sizeof(struct s_transform))))
 		return (NULL);
-	t->position = new_vector3f(0, 0, 0);
-	t->rotation = new_vector3f(0, 0, 0);
-	t->scale = new_vector3f(0, 0, 0);
+	initialize_transform(t);
+	return (t);
+}
+
+t_transform	*initialize_transform(t_transform *t)
+{
+	initialize_vector3f(&t->position);
+	initialize_vector3f(&t->rotation);
+	initialize_vector3f(&t->scale);
 	return (t);
 }
 
 void		destruct_transform(t_transform *t)
 {
-	destruct_vector3f(t->position);
-	destruct_vector3f(t->rotation);
-	destruct_vector3f(t->scale);
 	free(t);
 }

@@ -33,7 +33,7 @@ static char	*read_contents(int fd, int size)
 	return (result);
 }
 
-char	*file_get_contents(char *filename)
+char	*file_get_contents(const char *filename)
 {
 	int			fd;
 	struct stat	st;

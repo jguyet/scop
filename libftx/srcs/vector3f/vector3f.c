@@ -27,6 +27,14 @@ t_vector3f		*new_vector3f(float x, float y, float z)
 	return (v);
 }
 
+t_vector3f		*initialize_vector3f(t_vector3f *v)
+{
+	v->x = 0.f;
+	v->y = 0.f;
+	v->z = 0.f;
+	return (v);
+}
+
 void			destruct_vector3f(t_vector3f *v)
 {
 	free(v);

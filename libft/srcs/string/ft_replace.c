@@ -17,7 +17,8 @@ static char	*local_rp(char *str, int i, char *old, char *new)
 	char	*res;
 
 	res = ft_strndup(str, i);
-	res = ft_dstrjoin(res, new, 1);
+	if (ft_strlen(new) > 0)
+		res = ft_dstrjoin(res, new, 1);
 	res = ft_dstrjoin(res, str + i + ft_strlen(old), 1);
 	ft_strdel(&str);
 	return (res);
@@ -28,8 +29,6 @@ char		*ft_replace(char *str, char *old, char *new)
 	int	len;
 	int	i;
 
-	if (ft_strlen(new) == 0)
-		return (str);
 	len = ft_strlen(old);
 	i = 0;
 	while (str[i])

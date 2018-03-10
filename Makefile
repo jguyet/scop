@@ -58,13 +58,26 @@ SRCSPROG1		=	\
 					srcs/scop/scop.c											\
 					srcs/scop/window.c											\
 					srcs/scop/context.c											\
-					srcs/scop/loop.c
+					srcs/scop/loop.c											\
+					srcs/scop/load_shaders.c									\
+					srcs/scop/load_models.c										\
+					srcs/scop/load_inputs.c										\
+					srcs/graphic/key/keyboard.c									\
+					srcs/graphic/key/mouse.c									\
+					srcs/shader/shader.c										\
+					srcs/model/model.c											\
+					srcs/glewglew/glewglew.c									\
+					srcs/glewglew/glewglew_builder.c							\
+					srcs/glewglew/glewglew_mesh.c								\
+					srcs/glewglew/glewglew_mesh_parser.c						\
+					srcs/glewglew/glewglew_material_parser.c					\
+					srcs/glewglew/glewglew_material.c
 
 DSRCSPROG1		=	$(addprefix $(SRCDIR), $(SRCSPROG1))
 
 OBJSPROG1		=	$(addprefix $(OBJDIR), $(DSRCSPROG1:.c=.o))
 
-OPENGL			=	-framework OpenGL -framework AppKit
+OPENGL			=	-framework OpenGL
 
 .SILENT:
 

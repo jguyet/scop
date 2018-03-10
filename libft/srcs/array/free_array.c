@@ -17,9 +17,11 @@
 void	free_array(char **array)
 {
 	int	i;
+	int size;
 
 	i = 0;
-	while (array[i])
-		ft_strdel(&array[i]);
+	size = (int)array_length(array);
+	while (i < size)
+		ft_strdel(&array[i++]);
 	free(array);
 }
