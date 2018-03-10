@@ -44,6 +44,10 @@ typedef struct		s_model
 {
 	t_shader		*shader;
 	t_glewglew		*glewglew;
+	unsigned int	vertex_location;
+	unsigned int	projection_location;
+	unsigned int	view_location;
+	unsigned int	model_location;
 }					t_model;
 
 typedef struct		s_keyboard
@@ -82,6 +86,10 @@ unsigned int		loadShaders(const char * vertex_file_path,const char * fragment_fi
 */
 t_model				*new_model(const char *file_path, t_shader *shader);
 void				destruct_model(t_model *model);
+void				load_model_textures(t_model *model);
+void				build_model_shader(t_model *model);
+void				build_model_vao(t_model *model);
+void				draw_model(t_model *model, t_matrix4f *m, t_matrix4f *v, t_matrix4f *p);
 
 /*
 ** MOUSE

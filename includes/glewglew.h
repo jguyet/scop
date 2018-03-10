@@ -35,14 +35,15 @@ typedef	struct				s_material
 typedef struct				s_mesh
 {
 	char					*name;
-	float					**vertexs;
+	float					*vertexs;
 	int						vertexs_length;
-	float					**normals;
+	float					*normals;
 	int						normals_length;
-	float					**texturecoords;
+	float					*texturecoords;
 	int						texturecoords_length;
-	unsigned int			**faces;
+	unsigned int			*faces;
 	int						faces_length;
+	unsigned int			vao;
 }							t_mesh;
 
 typedef struct				s_glewglew
@@ -77,6 +78,7 @@ void						parse_obj(t_glewglew *g, char *content);
 void						mesh_add_vertex(t_mesh *mesh, float x, float y, float z);
 void						mesh_add_normal(t_mesh *mesh, float x, float y, float z);
 void						mesh_add_texturecoord(t_mesh *mesh, float x, float y);
+void						mesh_add_face(t_mesh *mesh, unsigned int v1, unsigned int v2, unsigned int v3);
 
 void						mesh_parser_add_mesh(t_glewglew *g, char *line);
 void						mesh_parser_add_vertex(t_glewglew *g, char *line);

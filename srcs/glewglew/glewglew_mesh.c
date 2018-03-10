@@ -19,16 +19,16 @@ t_mesh		*new_mesh(char *name)
 	if (!(mesh = (struct s_mesh*)malloc(sizeof(struct s_mech*))))
 		return (NULL);
 	mesh->name = ft_strdup(name);
-	if (!(mesh->vertexs = (float **)malloc(sizeof(float*))))
+	if (!(mesh->vertexs = (float *)malloc(sizeof(float))))
 		return (NULL);
 	mesh->vertexs_length = 0;
-	if (!(mesh->normals = (float **)malloc(sizeof(float*))))
+	if (!(mesh->normals = (float *)malloc(sizeof(float))))
 		return (NULL);
 	mesh->normals_length = 0;
-	if (!(mesh->texturecoords = (float **)malloc(sizeof(float*))))
+	if (!(mesh->texturecoords = (float *)malloc(sizeof(float))))
 		return (NULL);
 	mesh->texturecoords_length = 0;
-	if (!(mesh->faces = (unsigned int **)malloc(sizeof(unsigned int*))))
+	if (!(mesh->faces = (unsigned int *)malloc(sizeof(unsigned int))))
 		return (NULL);
 	mesh->faces_length = 0;
 	return (mesh);
@@ -37,23 +37,19 @@ t_mesh		*new_mesh(char *name)
 void		mesh_add_vertex(t_mesh *mesh, float x, float y, float z)
 {
 	int		i;
-	float	*vertex;
-	float	**vertex_array;
+	float	*vertex_array;
 
-	if (!(vertex = (float *)malloc(sizeof(float*) * 3)))
-		return ;
-	vertex[0] = x;
-	vertex[1] = y;
-	vertex[2] = z;
-	if (!(vertex_array = (float **)malloc(sizeof(float*) * (mesh->vertexs_length + 1))))
+	if (!(vertex_array = (float *)malloc(sizeof(float) * ((mesh->vertexs_length + 1) * 3))))
 		return ;
 	i = 0;
-	while (i < mesh->vertexs_length)
+	while (i < (mesh->vertexs_length * 3))
 	{
 		vertex_array[i] = mesh->vertexs[i];
 		i++;
 	}
-	vertex_array[i] = vertex;
+	vertex_array[i + 0] = x;
+	vertex_array[i + 1] = y;
+	vertex_array[i + 2] = z;
 	free(mesh->vertexs);
 	mesh->vertexs = vertex_array;
 	mesh->vertexs_length++;
@@ -62,23 +58,19 @@ void		mesh_add_vertex(t_mesh *mesh, float x, float y, float z)
 void		mesh_add_normal(t_mesh *mesh, float x, float y, float z)
 {
 	int		i;
-	float	*normal;
-	float	**normal_array;
+	float	*normal_array;
 
-	if (!(normal = (float *)malloc(sizeof(float*) * 3)))
-		return ;
-	normal[0] = x;
-	normal[1] = y;
-	normal[2] = z;
-	if (!(normal_array = (float **)malloc(sizeof(float*) * (mesh->normals_length + 1))))
+	if (!(normal_array = (float *)malloc(sizeof(float) * ((mesh->normals_length + 1) * 3))))
 		return ;
 	i = 0;
-	while (i < mesh->normals_length)
+	while (i < (mesh->normals_length * 3))
 	{
 		normal_array[i] = mesh->normals[i];
 		i++;
 	}
-	normal_array[i] = normal;
+	normal_array[i + 0] = x;
+	normal_array[i + 1] = y;
+	normal_array[i + 2] = z;
 	free(mesh->normals);
 	mesh->normals = normal_array;
 	mesh->normals_length++;
@@ -87,33 +79,50 @@ void		mesh_add_normal(t_mesh *mesh, float x, float y, float z)
 void		mesh_add_texturecoord(t_mesh *mesh, float x, float y)
 {
 	int		i;
-	float	*uv;
-	float	**uv_array;
+	float	*uv_array;
 
-	if (!(uv = (float *)malloc(sizeof(float*) * 2)))
-		return ;
-	uv[0] = x;
-	uv[1] = y;
-	if (!(uv_array = (float **)malloc(sizeof(float*) * (mesh->texturecoords_length + 1))))
+	if (!(uv_array = (float *)malloc(sizeof(float) * ((mesh->texturecoords_length + 1) * 2))))
 		return ;
 	i = 0;
-	while (i < mesh->texturecoords_length)
+	while (i < (mesh->texturecoords_length * 2))
 	{
 		uv_array[i] = mesh->texturecoords[i];
 		i++;
 	}
-	uv_array[i] = uv;
+	uv_array[i + 0] = x;
+	uv_array[i + 1] = y;
 	free(mesh->texturecoords);
 	mesh->texturecoords = uv_array;
 	mesh->texturecoords_length++;
 }
 
+void		mesh_add_face(t_mesh *mesh, unsigned int v1, unsigned int v2, unsigned int v3)
+{
+	int				i;
+	unsigned int	*face_array;
+
+	if (!(face_array = (unsigned int *)malloc(sizeof(unsigned int) * ((mesh->faces_length + 1) * 3))))
+		return ;
+	i = 0;
+	while (i < (mesh->faces_length * 3))
+	{
+		face_array[i] = mesh->faces[i];
+		i++;
+	}
+	face_array[i + 0] = v1;
+	face_array[i + 1] = v2;
+	face_array[i + 2] = v3;
+	free(mesh->faces);
+	mesh->faces = face_array;
+	mesh->faces_length++;
+}
+
 void		destruct_mesh(t_mesh *mesh)
 {
 	ft_strdel(&mesh->name);
-	free_array_type((void**)mesh->vertexs, mesh->vertexs_length, "float**");
-	free_array_type((void**)mesh->normals, mesh->normals_length, "float**");
-	free_array_type((void**)mesh->texturecoords, mesh->texturecoords_length, "float**");
-	free_array_type((void**)mesh->faces, mesh->faces_length, "unsigned int*");
+	free(mesh->vertexs);
+	free(mesh->normals);
+	free(mesh->texturecoords);
+	free(mesh->faces);
 	free(mesh);
 }
