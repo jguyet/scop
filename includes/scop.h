@@ -48,6 +48,8 @@ typedef struct		s_model
 	unsigned int	projection_location;
 	unsigned int	view_location;
 	unsigned int	model_location;
+	unsigned int	material_block_location;
+	unsigned int	material_location;
 }					t_model;
 
 typedef struct		s_keyboard

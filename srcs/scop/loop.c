@@ -22,7 +22,7 @@ void			render_loop(t_scop *s)
 	{
 		SDL_GL_SwapWindow(s->window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		glClearColor(0.0f, 1.0f, 0.0f, 0.0f);
 		build_look_at_projection(s->camera, s->screen);
 
 		t_model *current_model = (t_model*)s->models->get(s->models, "42");

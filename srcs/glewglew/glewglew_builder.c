@@ -36,6 +36,8 @@ int		glewglew_build_file(t_glewglew *g, const char *filename)
 		g->initializer.lexer_obj, "f", &mesh_parser_add_face);
 	g->initializer.lexer_obj->add(\
 		g->initializer.lexer_obj, "mtllib", &mesh_parser_add_material);
+	g->initializer.lexer_obj->add(\
+		g->initializer.lexer_obj, "usemtl", &mesh_parser_use_material);
 	parse_obj(g, content);
 	free(content);
 	free(path);

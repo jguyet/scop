@@ -28,11 +28,26 @@ t_material		*new_material(char *name)
 void			initialize_material(t_material *material)
 {
 	material->name = NULL;
-	initialize_vector4f(&material->diffuse);
-	initialize_vector4f(&material->ambiente);
-	initialize_vector4f(&material->specular);
-	initialize_vector4f(&material->emission);
-	material->shininess = 0;
+	material->block.diffuse[0] = 0.0f;
+	material->block.diffuse[1] = 0.0f;
+	material->block.diffuse[2] = 0.0f;
+	material->block.diffuse[3] = 0.0f;
+	material->block.ambiante[0] = 0.0f;
+	material->block.ambiante[1] = 0.0f;
+	material->block.ambiante[2] = 0.0f;
+	material->block.ambiante[3] = 0.0f;
+	material->block.specular[0] = 0.0f;
+	material->block.specular[1] = 0.0f;
+	material->block.specular[2] = 0.0f;
+	material->block.specular[3] = 0.0f;
+	material->block.emission[0] = 0.0f;
+	material->block.emission[1] = 0.0f;
+	material->block.emission[2] = 0.0f;
+	material->block.emission[3] = 0.0f;
+	material->block.shininess = 0;
+	material->block.diffuse_texture = false;
+	material->block.specular_texture = false;
+	material->block.ambiante_texture = false;
 	material->diffuse_texture = NULL;
 	material->specular_texture = NULL;
 	material->ambiante_texture = NULL;

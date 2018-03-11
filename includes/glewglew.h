@@ -27,17 +27,28 @@ typedef struct				s_glewglew_initalizer
 	t_hashmap				*lexer_material;
 }							t_glewglew_initalizer;
 
+typedef struct				s_material_gl
+{
+	float					diffuse[4];
+	float					ambiante[4];
+	float					specular[4];
+	float					emission[4];
+	float					shininess;
+	BOOLEAN					diffuse_texture;
+	BOOLEAN					specular_texture;
+	BOOLEAN					ambiante_texture;
+}							t_material_gl;
+
 typedef	struct				s_material
 {
+	t_material_gl			block;
 	char					*name;
-	t_vector4f				diffuse;
-	t_vector4f				ambiente;
-	t_vector4f				specular;
-	t_vector4f				emission;
-	unsigned int			shininess;
 	char					*diffuse_texture;
 	char					*specular_texture;
 	char					*ambiante_texture;
+	unsigned int			diffuse_texture_id;
+	unsigned int			specular_texture_id;
+	unsigned int			ambiante_texture_id;
 }							t_material;
 
 typedef struct				s_mesh
@@ -51,7 +62,9 @@ typedef struct				s_mesh
 	int						texturecoords_length;
 	unsigned int			*faces;
 	int						faces_length;
+	t_material				*material;
 	unsigned int			vao;
+	unsigned int			material_buffer_block_location;
 	t_vector3f				max;
 	t_vector3f				min;
 }							t_mesh;
@@ -100,6 +113,7 @@ void						mesh_parser_add_texture_position(t_glewglew *g, char *line);
 void						mesh_parser_add_normal(t_glewglew *g, char *line);
 void						mesh_parser_add_face(t_glewglew *g, char *line);
 void						mesh_parser_add_material(t_glewglew *g, char *line);
+void						mesh_parser_use_material(t_glewglew *g, char *line);
 
 /*
 ** MATERIAL PARSER

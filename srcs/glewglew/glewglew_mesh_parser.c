@@ -92,3 +92,23 @@ void	mesh_parser_add_material(t_glewglew *g, char *line)
 	}
 	free_array(split);
 }
+
+void	mesh_parser_use_material(t_glewglew *g, char *line)
+{
+	char		**split;
+	t_material	*material;
+
+	if (g->current_mesh == NULL)
+		return ;
+	split = ft_split_string(line, " ");
+	if ((int)array_length(split) == 2)
+	{
+		material = g->materials_map->get(g->materials_map, split[1]);
+		g->current_mesh->material = material;
+
+		if (g->current_mesh->material != NULL)
+			ft_printf("OKOKOKOK\n");
+		ft_printf("use_material\n");
+	}
+	free_array(split);
+}

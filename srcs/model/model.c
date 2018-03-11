@@ -57,6 +57,8 @@ void			build_model_shader(t_model *model)
 	glGetUniformLocation(model->shader->id, "u_viewMatrix");
 	model->model_location = \
 	glGetUniformLocation(model->shader->id, "u_modelMatrix");
+	GLuint m = glGetUniformBlockIndex(model->shader->id,"u_material");
+	glUniformBlockBinding(model->shader->id, m, model->material_location);
 	glBindFragDataLocation(model->shader->id, 0, "o_color");
 }
 
@@ -94,6 +96,14 @@ void			build_model_vao(t_model *model)
 		glBindVertexArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+		if (mesh->material != NULL)
+		{
+			ft_printf("BUILD MATERIAL\n");
+			glGenBuffers(1, &mesh->material_buffer_block_location);
+			glBindBuffer(GL_UNIFORM_BUFFER, mesh->material_buffer_block_location);
+			glBufferData(GL_UNIFORM_BUFFER, sizeof(struct s_material_gl), &mesh->material->block, GL_STATIC_DRAW);
+		}
 	}
 }
 
@@ -111,6 +121,12 @@ void			draw_model(t_model *model, t_matrix4f *m, t_matrix4f *v, t_matrix4f *p)
 	while (++i < model->glewglew->meshs_size)
 	{
 		mesh = model->glewglew->meshs[i];
+
+		if (mesh->material != NULL)
+		{
+			glBindBufferRange(GL_UNIFORM_BUFFER, model->material_location,\
+		 	mesh->material_buffer_block_location, 0, sizeof(struct s_material_gl));
+		}
 		glBindVertexArray(mesh->vao);
 		glDrawElements(GL_TRIANGLES,  mesh->faces_length * 3, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);

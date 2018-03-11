@@ -33,6 +33,7 @@ t_mesh		*new_mesh(char *name)
 	if (!(mesh->faces = (unsigned int *)malloc(sizeof(unsigned int))))
 		return (NULL);
 	mesh->faces_length = 0;
+	mesh->material = NULL;
 	initialize_vector3f(&mesh->max);
 	initialize_vector3f(&mesh->min);
 	return (mesh);
