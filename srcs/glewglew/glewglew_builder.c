@@ -87,6 +87,8 @@ int		glewglew_build_material(t_glewglew *g, const char *filename)
 		g->initializer.lexer_material, "Kd", &material_parser_add_diffuse);
 	g->initializer.lexer_material->add(\
 		g->initializer.lexer_material, "Ks", &material_parser_add_specular);
+	g->initializer.lexer_material->add(\
+		g->initializer.lexer_material, "map_kd", &material_parser_add_diffuse_texture);
 	parse_material(g, content);
 	free(content);
 	free(path);

@@ -34,10 +34,15 @@ void	material_parser_add_diffuse(t_glewglew *g, char *line)
 {
 	char		**split;
 
+	if (g->current_material == NULL)
+		return ;
 	split = ft_split_string(line, " ");
 	if (array_length(split) == 4)
 	{
-		(void)g;
+		g->current_material->diffuse.x = atof(split[1]);
+		g->current_material->diffuse.y = atof(split[2]);
+		g->current_material->diffuse.z = atof(split[3]);
+		g->current_material->diffuse.w = 1.0f;
 		ft_printf("ADD diffuse\n");
 	}
 	free_array(split);
@@ -45,14 +50,81 @@ void	material_parser_add_diffuse(t_glewglew *g, char *line)
 
 void	material_parser_add_ambiante(t_glewglew *g, char *line)
 {
-	(void)g;
-	(void)line;
-	ft_printf("ADD ambiante\n");
+	char		**split;
+
+	if (g->current_material == NULL)
+		return ;
+	split = ft_split_string(line, " ");
+	if (array_length(split) == 4)
+	{
+		g->current_material->ambiente.x = atof(split[1]);
+		g->current_material->ambiente.y = atof(split[2]);
+		g->current_material->ambiente.z = atof(split[3]);
+		g->current_material->ambiente.w = 1.0f;
+		ft_printf("ADD ambient\n");
+	}
+	free_array(split);
 }
 
 void	material_parser_add_specular(t_glewglew *g, char *line)
 {
-	(void)g;
-	(void)line;
-	ft_printf("ADD specular\n");
+	char		**split;
+
+	if (g->current_material == NULL)
+		return ;
+	split = ft_split_string(line, " ");
+	if (array_length(split) == 4)
+	{
+		g->current_material->specular.x = atof(split[1]);
+		g->current_material->specular.y = atof(split[2]);
+		g->current_material->specular.z = atof(split[3]);
+		g->current_material->specular.w = 1.0f;
+		ft_printf("ADD specular\n");
+	}
+	free_array(split);
+}
+
+void	material_parser_add_diffuse_texture(t_glewglew *g, char *line)
+{
+	char		**split;
+
+	if (g->current_material == NULL)
+		return ;
+	split = ft_split_string(line, " ");
+	if (array_length(split) == 1)
+	{
+		g->current_material->diffuse_texture = ft_strdup(split[1]);
+		ft_printf("ADD diffuse texture\n");
+	}
+	free_array(split);
+}
+
+void	material_parser_add_specular_texture(t_glewglew *g, char *line)
+{
+	char		**split;
+
+	if (g->current_material == NULL)
+		return ;
+	split = ft_split_string(line, " ");
+	if (array_length(split) == 1)
+	{
+		g->current_material->specular_texture = ft_strdup(split[1]);
+		ft_printf("ADD specular texture\n");
+	}
+	free_array(split);
+}
+
+void	material_parser_add_ambient_texture(t_glewglew *g, char *line)
+{
+	char		**split;
+
+	if (g->current_material == NULL)
+		return ;
+	split = ft_split_string(line, " ");
+	if (array_length(split) == 1)
+	{
+		g->current_material->ambiante_texture = ft_strdup(split[1]);
+		ft_printf("ADD ambient texture\n");
+	}
+	free_array(split);
 }

@@ -30,6 +30,14 @@ typedef struct				s_glewglew_initalizer
 typedef	struct				s_material
 {
 	char					*name;
+	t_vector4f				diffuse;
+	t_vector4f				ambiente;
+	t_vector4f				specular;
+	t_vector4f				emission;
+	unsigned int			shininess;
+	char					*diffuse_texture;
+	char					*specular_texture;
+	char					*ambiante_texture;
 }							t_material;
 
 typedef struct				s_mesh
@@ -101,11 +109,15 @@ void						material_parser_new_material(t_glewglew *g, char *line);
 void						material_parser_add_diffuse(t_glewglew *g, char *line);
 void						material_parser_add_ambiante(t_glewglew *g, char *line);
 void						material_parser_add_specular(t_glewglew *g, char *line);
+void						material_parser_add_diffuse_texture(t_glewglew *g, char *line);
+void						material_parser_add_specular_texture(t_glewglew *g, char *line);
+void						material_parser_add_ambient_texture(t_glewglew *g, char *line);
 
 /*
 ** MATERIAL
 */
 t_material					*new_material(char *name);
+void						initialize_material(t_material *material);
 void						destruct_material(t_material *material);
 
 # endif

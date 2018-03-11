@@ -20,8 +20,22 @@ t_material		*new_material(char *name)
 
 	if (!(material = (struct s_material*)malloc(sizeof(struct s_material))))
 		return (NULL);
+	initialize_material(material);
 	material->name = ft_strdup(name);
 	return (material);
+}
+
+void			initialize_material(t_material *material)
+{
+	material->name = NULL;
+	initialize_vector4f(&material->diffuse);
+	initialize_vector4f(&material->ambiente);
+	initialize_vector4f(&material->specular);
+	initialize_vector4f(&material->emission);
+	material->shininess = 0;
+	material->diffuse_texture = NULL;
+	material->specular_texture = NULL;
+	material->ambiante_texture = NULL;
 }
 
 void			destruct_material(t_material *material)
