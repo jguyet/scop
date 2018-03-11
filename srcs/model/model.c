@@ -16,15 +16,20 @@
 t_model			*new_model(const char *file_path, t_shader *shader)
 {
 	t_model		*m;
+	char		*base_name;
 
 	if (!(m = (struct s_model*)malloc(sizeof(struct s_model))))
 		return (NULL);
 	m->shader = shader;
 	m->glewglew = new_glewglew();
-	if (glewglew_build_file(m->glewglew, file_path, ".obj") == 0)
+	m->glewglew->initializer.absolute_path = file_absolute_path(file_path);
+	base_name = file_base_name(file_path);
+	ft_printf("ABSOLUTE_PATH : %s\n", m->glewglew->initializer.absolute_path);
+	if (m->glewglew->build_file(m->glewglew, base_name) == 0)
 	{
 		return (NULL);
 	}
+	free(base_name);
 	load_model_textures(m);
 	build_model_shader(m);
 	build_model_vao(m);

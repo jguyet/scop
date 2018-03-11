@@ -22,9 +22,9 @@
 
 typedef struct				s_glewglew_initalizer
 {
-	char					*filename;
-	char					*extension;
+	char					*absolute_path;
 	t_hashmap				*lexer_obj;
+	t_hashmap				*lexer_material;
 }							t_glewglew_initalizer;
 
 typedef	struct				s_material
@@ -51,7 +51,7 @@ typedef struct				s_mesh
 typedef struct				s_glewglew
 {
 	t_glewglew_initalizer	initializer;
-	int						(*build_file)(struct s_glewglew *, const char *, const char *);
+	int						(*build_file)(struct s_glewglew *, const char *);
 	t_material				**materials;
 	int						materials_size;
 	t_hashmap				*materials_map;
@@ -69,23 +69,38 @@ typedef struct				s_glewglew
 */
 t_mesh						*glewglew_add_mesh(t_glewglew *g, char *name);
 t_material					*glewglew_add_material(t_glewglew *g, char *name);
+int							glewglew_build_file(t_glewglew *g, const char *filename);
+int							glewglew_build_material(t_glewglew *g, const char *filename);
 
 /*
 ** MESH
 */
 t_mesh						*new_mesh(char *name);
 void						destruct_mesh(t_mesh *mesh);
-void						parse_obj(t_glewglew *g, char *content);
 void						mesh_add_vertex(t_mesh *mesh, float x, float y, float z);
 void						mesh_add_normal(t_mesh *mesh, float x, float y, float z);
 void						mesh_add_texturecoord(t_mesh *mesh, float x, float y);
 void						mesh_add_face(t_mesh *mesh, unsigned int v1, unsigned int v2, unsigned int v3);
 
+/*
+** OBJ PARSER
+*/
+void						parse_obj(t_glewglew *g, char *content);
 void						mesh_parser_add_mesh(t_glewglew *g, char *line);
 void						mesh_parser_add_vertex(t_glewglew *g, char *line);
 void						mesh_parser_add_texture_position(t_glewglew *g, char *line);
 void						mesh_parser_add_normal(t_glewglew *g, char *line);
 void						mesh_parser_add_face(t_glewglew *g, char *line);
+void						mesh_parser_add_material(t_glewglew *g, char *line);
+
+/*
+** MATERIAL PARSER
+*/
+void						parse_material(t_glewglew *g, char *content);
+void						material_parser_new_material(t_glewglew *g, char *line);
+void						material_parser_add_diffuse(t_glewglew *g, char *line);
+void						material_parser_add_ambiante(t_glewglew *g, char *line);
+void						material_parser_add_specular(t_glewglew *g, char *line);
 
 /*
 ** MATERIAL
@@ -100,5 +115,4 @@ void						destruct_material(t_material *material);
 */
 t_glewglew					*new_glewglew(void);
 void						destruct_glewglew(t_glewglew *g);
-int							glewglew_build_file(t_glewglew *g, const char *filename, const char *extension);
 #endif

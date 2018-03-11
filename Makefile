@@ -58,6 +58,7 @@ SRCSPROG1		=	\
 					srcs/scop/scop.c											\
 					srcs/scop/window.c											\
 					srcs/scop/context.c											\
+					srcs/scop/screen.c											\
 					srcs/scop/loop.c											\
 					srcs/scop/load_shaders.c									\
 					srcs/scop/load_models.c										\

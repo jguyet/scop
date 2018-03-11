@@ -71,15 +71,15 @@ void			destruct_matrix4f(t_matrix4f *m)
 	free(m);
 }
 
-t_matrix4f		*matrix4f_identity(void)
+t_matrix4f		*matrix4f_identity(float t)
 {
 	t_matrix4f	*i;
 
 	i = new_matrix4f();
-	i->matrix[0][0] = 1;
-	i->matrix[1][1] = 1;
-	i->matrix[2][2] = 1;
-	i->matrix[3][3] = 1;
+	i->matrix[0][0] = t;
+	i->matrix[1][1] = t;
+	i->matrix[2][2] = t;
+	i->matrix[3][3] = 1.0f;
 	return (i);
 }
 
@@ -168,7 +168,7 @@ t_matrix4f		*matrix4f_translate(t_vector3f *v)
 {
 	t_matrix4f	*m;
 
-	m = matrix4f_identity();
+	m = matrix4f_identity(1.0f);
 	m->matrix[0][3] = v->x;
 	m->matrix[1][3] = v->y;
 	m->matrix[2][3] = v->z;

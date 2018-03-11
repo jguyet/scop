@@ -22,20 +22,20 @@ t_matrix4f	*matrix4f_look_at(t_vector3f *eye, t_vector3f *center, t_vector3f *up
 	t_vector3f	*s;
 	t_vector3f	*u;
 
-	matrix = matrix4f_identity();
-	f = new_vector3f(center->x - eye->x, center->y - eye->y,\
-		center->z - eye->z);
+	f = v3f_normalize(new_vector3f(center->x - eye->x, center->y - eye->y,\
+		center->z - eye->z));
 	s = v3f_normalize(v3f_cross(f, up));
 	u = v3f_cross(s, f);
+	matrix = matrix4f_identity(1.0f);
 	matrix->matrix[0][0] = s->x;
 	matrix->matrix[1][0] = s->y;
 	matrix->matrix[2][0] = s->z;
 	matrix->matrix[0][1] = u->x;
 	matrix->matrix[1][1] = u->y;
 	matrix->matrix[2][1] = u->z;
-	matrix->matrix[0][2] =-f->x;
-	matrix->matrix[1][2] =-f->y;
-	matrix->matrix[2][2] =-f->z;
+	matrix->matrix[0][2] = -f->x;
+	matrix->matrix[1][2] = -f->y;
+	matrix->matrix[2][2] = -f->z;
 	matrix->matrix[3][0] = -v3f_dot(s, eye);
 	matrix->matrix[3][1] = -v3f_dot(u, eye);
 	matrix->matrix[3][2] = v3f_dot(f, eye);

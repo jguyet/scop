@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#define GLEWGLEW_PROGRAMME
+
 #include "glewglew.h"
 
 t_mesh		*new_mesh(char *name)

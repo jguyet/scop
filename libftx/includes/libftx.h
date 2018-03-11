@@ -105,7 +105,7 @@ t_vector4f		*v4f_normalize(t_vector4f *v);
 t_matrix4f		*new_matrix4f(void);
 t_matrix4f		*initialize_matrix4f(t_matrix4f *m);
 void			destruct_matrix4f(t_matrix4f *m);
-t_matrix4f		*matrix4f_identity(void);
+t_matrix4f		*matrix4f_identity(float t);
 t_matrix4f		*copy_matrix4f(t_matrix4f *origin);
 t_matrix4f		*matrix4f_mul(t_matrix4f *m, t_matrix4f *m2);
 t_vector3f		*apply_matrix4f_to_vertex(t_matrix4f *m, t_vector3f *v);

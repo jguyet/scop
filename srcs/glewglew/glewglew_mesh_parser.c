@@ -78,3 +78,17 @@ void	mesh_parser_add_face(t_glewglew *g, char *line)
 	}
 	free_array(split);
 }
+
+void	mesh_parser_add_material(t_glewglew *g, char *line)
+{
+	char **split;
+
+	split = ft_split_string(line, " ");
+	if ((int)array_length(split) == 2)
+	{
+		g->current_material = NULL;
+		glewglew_build_material(g, split[1]);
+		g->current_material = NULL;
+	}
+	free_array(split);
+}

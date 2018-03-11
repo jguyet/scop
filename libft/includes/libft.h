@@ -164,6 +164,12 @@ size_t				array_length(char **array);
 void				free_array(char **array);
 void				free_array_type(void **array, unsigned int size, const char *type);
 
+/*
+** FILES
+*/
+char				*file_base_name(const char *file_path);
+char				*file_absolute_path(const char *file_path);
+
 # define ___N0		STDERR_FILENO, "{bold}{red}ERROR{white} %s:%i:{reset}\t"
 # define ___N1		__FILE__, __LINE__
 # define ERROR(format, ...)	ft_dprintf(___N0 format "\n", ___N1, ##__VA_ARGS__)

@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   screen.c                                           :+:      :+:    :+:   */
+/*   file_base_name.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jguyet <jguyet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/11 17:16:10 by jguyet            #+#    #+#             */
-/*   Updated: 2018/03/11 17:25:23 by jguyet           ###   ########.fr       */
+/*   Created: 2018/03/11 20:25:06 by jguyet            #+#    #+#             */
+/*   Updated: 2018/03/11 20:25:08 by jguyet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "scop.h"
+#include "libft.h"
 
-t_screen	*new_screen(int width, int height)
+char			*file_base_name(const char *file_path)
 {
-	t_screen	*screen;
+	char		**split;
+	char		*base_name;
+	size_t		split_size;
 
-	if (!(screen = (struct s_screen*)malloc(sizeof(struct s_screen))))
-		return (NULL);
-	screen->width = width;
-	screen->height = height;
-	screen->middle_width = screen->width / 2;
-	screen->middle_height = screen->height / 2;
-	return (screen);
-}
-
-void		destruct_screen(t_screen *screen)
-{
-	free(screen);
+	split = ft_split_string(file_path, "/");
+	split_size = array_length(split);
+	if (split_size <= 0)
+	{
+		free_array(split);
+		return (ft_strnew(0));
+	}
+	base_name = ft_strdup(split[split_size - 1]);
+	free_array(split);
+	return (base_name);
 }

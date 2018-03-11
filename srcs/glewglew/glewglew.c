@@ -25,6 +25,7 @@ t_glewglew	*new_glewglew(void)
 	g->meshs_map = newstringhashmap(10);
 	g->current_mesh = NULL;
 	g->current_material = NULL;
+	g->initializer.absolute_path = NULL;
 	if ((g->meshs = (struct s_mesh**)malloc(sizeof(struct s_mesh*))) == NULL)
 		return (NULL);
 	g->meshs_size = 0;
@@ -67,6 +68,7 @@ t_material	*glewglew_add_material(t_glewglew *g, char *name)
 	t_material	**materials;
 
 	material = new_material(name);
+	g->materials_map->remove(g->materials_map, name);
 	g->materials_map->add(g->materials_map, name, material);
 	if ((materials = (struct s_material**)malloc(sizeof(struct s_material*) *\
 	(g->materials_size + 1))) == NULL)

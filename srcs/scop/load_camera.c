@@ -15,25 +15,21 @@
 void		load_camera(t_scop *s)
 {
 	s->camera = new_camera();
-	build_look_at_projection(s->camera);
+	build_look_at_projection(s->camera, s->screen);
 }
 
-void		build_look_at_projection(t_camera *camera)
+void		build_look_at_projection(t_camera *camera, t_screen *screen)
 {
 	t_vector3f	to;
 	t_vector3f	*up;
 
-
 	if (camera->projection != NULL)
 		destruct_matrix4f(camera->projection);
-	if (camera->model != NULL)
-		destruct_matrix4f(camera->model);
 	if (camera->view != NULL)
 		destruct_matrix4f(camera->view);
 	initialize_vector3f(&to);
 	up = new_vector3f(0, 1, 0);
-	camera->projection = matrix4f_perspective(45.0f, 1000 / 500, 1, 1000);
-	camera->model = matrix4f_identity();
+	camera->projection = matrix4f_perspective(45.0f, screen->width / screen->height, 0.1f, 500.f);
 	camera->view = matrix4f_look_at(&camera->transform.position, &to, up);
 	free(up);
 }

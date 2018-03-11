@@ -14,8 +14,8 @@
 
 void		load_models(t_scop *scop)
 {
-	scop->models->add(scop->models, "42", new_model("42.obj", (t_shader*)scop->shaders->get(scop->shaders, "global")));
-	scop->models->add(scop->models, "plan", new_model("plan.obj", (t_shader*)scop->shaders->get(scop->shaders, "global")));
-	scop->models->add(scop->models, "goomba", new_model("goomba.obj", (t_shader*)scop->shaders->get(scop->shaders, "global")));
-	scop->models->add(scop->models, "bomb", new_model("bomb.obj", (t_shader*)scop->shaders->get(scop->shaders, "global")));
+	scop->models->add(scop->models, "42", new_model("objs/42.obj", (t_shader*)scop->shaders->get(scop->shaders, "global")));
+	scop->models->add(scop->models, "plan", new_model("objs/plan.obj", (t_shader*)scop->shaders->get(scop->shaders, "global")));
+	scop->models->add(scop->models, "goomba", new_model("objs/goomba.obj", (t_shader*)scop->shaders->get(scop->shaders, "global")));
+	scop->models->add(scop->models, "bomb", new_model("objs/bomb.obj", (t_shader*)scop->shaders->get(scop->shaders, "global")));
 }

@@ -23,11 +23,11 @@ void			render_loop(t_scop *s)
 		SDL_GL_SwapWindow(s->window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		build_look_at_projection(s->camera);
+		build_look_at_projection(s->camera, s->screen);
 
 		t_model *current_model = (t_model*)s->models->get(s->models, "42");
 
-		t_matrix4f	*model = matrix4f_identity();
+		t_matrix4f	*model = matrix4f_identity(1.0f);
 
 		model = matrix_rotate(model, rotation * (MATHF_PI * 2) / 360, new_vector3f(0.0f, 1.0f, 0.0f));
 
@@ -51,7 +51,11 @@ void			render_loop(t_scop *s)
 		}
 		if (get_key(s->keyboard, 44))//up
 		{
-			s->camera->transform.position.y -= 0.1f;
+			s->camera->transform.position.y += 0.1f;
+		}
+		if (get_key(s->keyboard, 41))//escape
+		{
+			return ;
 		}
 		while(SDL_PollEvent(&event))
 		{

@@ -20,7 +20,7 @@ void				build_window(t_scop	*s)
 		exit(0);
 	}
 	int flags = SDL_WINDOW_OPENGL;
-	s->window = SDL_CreateWindow("Scop", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1000, 500, flags);
+	s->window = SDL_CreateWindow("Scop", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, s->screen->width, s->screen->height, flags);
 	if (!s->window)
 	{
 		ft_printf("Couldn't create window: %s\n", SDL_GetError());

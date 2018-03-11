@@ -82,6 +82,7 @@ typedef struct		s_scop
 	t_mouse			*mouse;
 	t_keyboard		*keyboard;
 	t_camera		*camera;
+	t_screen		*screen;
 }					t_scop;
 
 /*
@@ -118,6 +119,12 @@ BOOLEAN				get_key(t_keyboard *keyboard, unsigned int key);
 void				keyboard_event_handler(t_keyboard *keyboard, SDL_Event *event);
 
 /*
+** SCREEN
+*/
+t_screen			*new_screen(int width, int height);
+void				destruct_screen(t_screen *screen);
+
+/*
 ** SCOP
 */
 t_scop				*new_scop(void);
@@ -137,6 +144,6 @@ void				render_loop(t_scop *s);
 void				destruct_context(t_scop *s);
 void				destruct_window(t_scop *s);
 
-void				build_look_at_projection(t_camera *camera);
+void				build_look_at_projection(t_camera *camera, t_screen *screen);
 
 #endif

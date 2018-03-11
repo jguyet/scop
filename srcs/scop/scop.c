@@ -23,6 +23,7 @@ t_scop				*new_scop(void)
 		return (NULL);
 	s->models = newstringhashmap(10);
 	s->shaders = newstringhashmap(10);
+	s->screen = new_screen(1280, 750);
 	return (s);
 }
 
