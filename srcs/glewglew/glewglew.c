@@ -45,7 +45,7 @@ t_mesh		*glewglew_add_mesh(t_glewglew *g, char *name)
 	g->meshs_map->remove(g->meshs_map, name);
 	g->meshs_map->add(g->meshs_map, name, mesh);
 	if ((meshs = (struct s_mesh**)malloc(sizeof(struct s_mesh*) *\
-	 	(g->meshs_size + 1))) == NULL)
+	(g->meshs_size + 1))) == NULL)
 		return (NULL);
 	i = 0;
 	while (i < g->meshs_size)
@@ -69,7 +69,7 @@ t_material	*glewglew_add_material(t_glewglew *g, char *name)
 	material = new_material(name);
 	g->materials_map->add(g->materials_map, name, material);
 	if ((materials = (struct s_material**)malloc(sizeof(struct s_material*) *\
-	 	(g->materials_size + 1))) == NULL)
+	(g->materials_size + 1))) == NULL)
 		return (NULL);
 	i = 0;
 	while (i < g->materials_size)

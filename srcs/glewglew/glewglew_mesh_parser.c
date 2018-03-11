@@ -35,7 +35,8 @@ void	mesh_parser_add_vertex(t_glewglew *g, char *line)
 	split = ft_split_string(line, " ");
 	if (array_length(split) == 4)
 	{
-		mesh_add_vertex(g->current_mesh, atof(split[1]), atof(split[2]), atof(split[3]));
+		mesh_add_vertex(g->current_mesh,\
+			atof(split[1]), atof(split[2]), atof(split[3]));
 	}
 	free_array(split);
 }
@@ -63,14 +64,17 @@ void	mesh_parser_add_face(t_glewglew *g, char *line)
 	if (g->current_mesh == NULL)
 		return ;
 	split = ft_split_string(line, " ");
-	if (array_length(split) == 4)//TRIANGLES
+	if (array_length(split) == 4)
 	{
-		mesh_add_face(g->current_mesh, atoi(split[1]) - 1, atoi(split[2]) - 1, atoi(split[3]) - 1);
+		mesh_add_face(g->current_mesh,\
+			atoi(split[1]) - 1, atoi(split[2]) - 1, atoi(split[3]) - 1);
 	}
-	else if (array_length(split) == 5)//QUADS
+	else if (array_length(split) == 5)
 	{
-		mesh_add_face(g->current_mesh, atoi(split[1]) - 1, atoi(split[2]) - 1, atoi(split[3]) - 1);
-		mesh_add_face(g->current_mesh, atoi(split[1]) - 1, atoi(split[3]) - 1, atoi(split[4]) - 1);
+		mesh_add_face(g->current_mesh,\
+			atoi(split[1]) - 1, atoi(split[2]) - 1, atoi(split[3]) - 1);
+		mesh_add_face(g->current_mesh,\
+			atoi(split[1]) - 1, atoi(split[3]) - 1, atoi(split[4]) - 1);
 	}
 	free_array(split);
 }

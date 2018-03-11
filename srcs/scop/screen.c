@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   glewglew_material.c                                :+:      :+:    :+:   */
+/*   screen.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jguyet <jguyet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/10 12:57:52 by jguyet            #+#    #+#             */
-/*   Updated: 2018/03/10 12:57:53 by jguyet           ###   ########.fr       */
+/*   Created: 2018/03/11 17:16:10 by jguyet            #+#    #+#             */
+/*   Updated: 2018/03/11 17:25:23 by jguyet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define GLEWGLEW_PROGRAMME
+#include "scop.h"
 
-#include "glewglew.h"
-
-t_material		*new_material(char *name)
+t_screen	*new_screen(void)
 {
-	t_material	*material;
+	t_screen	*screen;
 
-	if (!(material = (struct s_material*)malloc(sizeof(struct s_material))))
+	if (!(screen = (struct s_screen*)malloc(sizeof(struct s_screen))))
 		return (NULL);
-	material->name = ft_strdup(name);
-	return (material);
+	initialize_screen(screen);
+	return (screen);
 }
 
-void			destruct_material(t_material *material)
+void		initialize_screen(t_screen *screen)
 {
-	ft_strdel(&material->name);
-	free(material);
+	screen->width = 0;
+	screen->height = 0;
+	screen->middle_width = 0;
+	screen->middle_heigth = 0;
 }

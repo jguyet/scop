@@ -44,17 +44,20 @@ void			load_model_textures(t_model *model)
 
 void			build_model_shader(t_model *model)
 {
-	model->vertex_location = glGetAttribLocation(model->shader->id,"a_pos");
-	model->projection_location = glGetUniformLocation(model->shader->id, "u_projMatrix");
-	model->view_location = glGetUniformLocation(model->shader->id, "u_viewMatrix");
-	model->model_location = glGetUniformLocation(model->shader->id, "u_modelMatrix");
-
+	model->vertex_location = \
+	glGetAttribLocation(model->shader->id, "a_pos");
+	model->projection_location = \
+	glGetUniformLocation(model->shader->id, "u_projMatrix");
+	model->view_location = \
+	glGetUniformLocation(model->shader->id, "u_viewMatrix");
+	model->model_location = \
+	glGetUniformLocation(model->shader->id, "u_modelMatrix");
 	glBindFragDataLocation(model->shader->id, 0, "o_color");
 }
 
 void			build_model_vao(t_model *model)
 {
-	int i;
+	int		i;
 	t_mesh	*mesh;
 	GLuint	buffer;
 
@@ -62,10 +65,8 @@ void			build_model_vao(t_model *model)
 	while (++i < model->glewglew->meshs_size)
 	{
 		mesh = model->glewglew->meshs[i];
-
 		ft_printf("min %f,%f,%f max %f,%f,%f\n", mesh->min.x, mesh->min.y, mesh->min.z, mesh->max.x, mesh->max.y, mesh->max.z);
 		ft_printf("center %f,%f,%f\n", ((mesh->max.x + mesh->min.x) / 2), ((mesh->max.y + mesh->min.y) / 2), ((mesh->max.z + mesh->min.z) / 2));
-
 		glGenVertexArrays(1,&mesh->vao);
 		glBindVertexArray(mesh->vao);
 		glGenBuffers(1, &buffer);
@@ -79,7 +80,6 @@ void			build_model_vao(t_model *model)
 				mesh->vertexs[o + 1] = mesh->vertexs[o + 1] - (float)((mesh->max.y + mesh->min.y) / 2.f);
 				mesh->vertexs[o + 2] = mesh->vertexs[o + 2] - (float)((mesh->max.z + mesh->min.z) / 2.f);
 			}
-
 			glGenBuffers(1, &buffer);
             glBindBuffer(GL_ARRAY_BUFFER, buffer);
             glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * mesh->vertexs_length, &mesh->vertexs[0], GL_STATIC_DRAW);

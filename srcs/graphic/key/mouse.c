@@ -38,15 +38,19 @@ void		destruct_mouse(t_mouse *mouse)
 
 void		mouse_motion_event_handler(t_mouse *mouse, SDL_Event *event)
 {
+	float mw;
+	float mh;
+
 	if (event->type != SDL_MOUSEMOTION)
 		return ;
-	float mw = 500;//BombermanClient::getInstance()->screen->middleWidth;
-	float mh = 500;//BombermanClient::getInstance()->screen->middleHeight;
+	mw = 500;
+	mh = 500;
 	mouse->lastPosition.x = mouse->position.x;
 	mouse->lastPosition.y = mouse->position.y;
 	mouse->position.x = -(event->motion.x - mw);
 	mouse->position.y = -(event->motion.y - mh);
-	if (mouse->lastPosition.x == 0 && mouse->lastPosition.y == 0) {
+	if (mouse->lastPosition.x == 0 && mouse->lastPosition.y == 0)
+	{
 		return ;
 	}
 }
@@ -55,7 +59,8 @@ void		mouse_button_event_handler(t_mouse *mouse, SDL_Event *event)
 {
 	if (event->type != SDL_MOUSEBUTTONDOWN && event->type != SDL_MOUSEBUTTONUP)
 		return ;
-	mouse->pressedButton[event->button.button] = (event->type == SDL_MOUSEBUTTONDOWN) ? true : false;
+	mouse->pressedButton[event->button.button] = \
+	(event->type == SDL_MOUSEBUTTONDOWN) ? true : false;
 }
 
 BOOLEAN		get_button(t_mouse *mouse, unsigned int button)

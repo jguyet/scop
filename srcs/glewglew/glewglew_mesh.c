@@ -36,23 +36,8 @@ t_mesh		*new_mesh(char *name)
 	return (mesh);
 }
 
-void		mesh_add_vertex(t_mesh *mesh, float x, float y, float z)
+void		mesh_calcul_position(t_mesh *mesh, float x, float y, float z)
 {
-	int		i;
-	float	*vertex_array;
-
-	if (!(vertex_array = (float *)malloc(sizeof(float) * ((mesh->vertexs_length + 1) * 3))))
-		return ;
-	i = 0;
-	while (i < (mesh->vertexs_length * 3))
-	{
-		vertex_array[i] = mesh->vertexs[i];
-		i++;
-	}
-	vertex_array[i + 0] = x;
-	vertex_array[i + 1] = y;
-	vertex_array[i + 2] = z;
-
 	if (x >= mesh->max.x)
 		mesh->max.x = x;
 	if (x <= mesh->min.x)
@@ -65,6 +50,26 @@ void		mesh_add_vertex(t_mesh *mesh, float x, float y, float z)
 		mesh->max.z = z;
 	if (z <= mesh->min.z)
 		mesh->min.z = z;
+}
+
+void		mesh_add_vertex(t_mesh *mesh, float x, float y, float z)
+{
+	int		i;
+	float	*vertex_array;
+
+	if (!(vertex_array =\
+		(float *)malloc(sizeof(float) * ((mesh->vertexs_length + 1) * 3))))
+		return ;
+	i = 0;
+	while (i < (mesh->vertexs_length * 3))
+	{
+		vertex_array[i] = mesh->vertexs[i];
+		i++;
+	}
+	vertex_array[i + 0] = x;
+	vertex_array[i + 1] = y;
+	vertex_array[i + 2] = z;
+	mesh_calcul_position(mesh, x, y, z);
 	free(mesh->vertexs);
 	mesh->vertexs = vertex_array;
 	mesh->vertexs_length++;
@@ -75,7 +80,8 @@ void		mesh_add_normal(t_mesh *mesh, float x, float y, float z)
 	int		i;
 	float	*normal_array;
 
-	if (!(normal_array = (float *)malloc(sizeof(float) * ((mesh->normals_length + 1) * 3))))
+	if (!(normal_array =\
+		(float *)malloc(sizeof(float) * ((mesh->normals_length + 1) * 3))))
 		return ;
 	i = 0;
 	while (i < (mesh->normals_length * 3))
@@ -96,7 +102,8 @@ void		mesh_add_texturecoord(t_mesh *mesh, float x, float y)
 	int		i;
 	float	*uv_array;
 
-	if (!(uv_array = (float *)malloc(sizeof(float) * ((mesh->texturecoords_length + 1) * 2))))
+	if (!(uv_array = (float *)malloc(sizeof(float) *\
+		((mesh->texturecoords_length + 1) * 2))))
 		return ;
 	i = 0;
 	while (i < (mesh->texturecoords_length * 2))
@@ -111,12 +118,14 @@ void		mesh_add_texturecoord(t_mesh *mesh, float x, float y)
 	mesh->texturecoords_length++;
 }
 
-void		mesh_add_face(t_mesh *mesh, unsigned int v1, unsigned int v2, unsigned int v3)
+void		mesh_add_face(t_mesh *mesh, unsigned int v1, unsigned int v2,\
+	unsigned int v3)
 {
 	int				i;
 	unsigned int	*face_array;
 
-	if (!(face_array = (unsigned int *)malloc(sizeof(unsigned int) * ((mesh->faces_length + 1) * 3))))
+	if (!(face_array = (unsigned int *)malloc(sizeof(unsigned int) *\
+		((mesh->faces_length + 1) * 3))))
 		return ;
 	i = 0;
 	while (i < (mesh->faces_length * 3))

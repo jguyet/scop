@@ -65,6 +65,14 @@ typedef struct		s_mouse
 	BOOLEAN			pressedButton[8];
 }					t_mouse;
 
+typedef struct		s_screen
+{
+	unsigned int	width;
+	unsigned int	height;
+	unsigned int	middle_width;
+	unsigned int	middle_height;
+}					t_screen;
+
 typedef struct		s_scop
 {
 	SDL_Window		*window;

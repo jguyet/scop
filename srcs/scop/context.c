@@ -28,7 +28,7 @@ void				build_context(t_scop *s)
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_MULTISAMPLE);
-	SDL_GL_SetSwapInterval(0);
+	SDL_GL_SetSwapInterval(1);
 }
 
 void				destruct_context(t_scop *s)

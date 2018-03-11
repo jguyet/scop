@@ -17,7 +17,7 @@ t_keyboard		*new_keyboard(void)
 	t_keyboard	*keyboard;
 	int			i;
 
-	if ((keyboard = (struct s_keyboard*)malloc(sizeof(struct s_keyboard))) == NULL)
+	if (!(keyboard = (struct s_keyboard*)malloc(sizeof(struct s_keyboard))))
 		return (NULL);
 	keyboard->handle_event = &keyboard_event_handler;
 	i = 0;
@@ -38,7 +38,8 @@ void			keyboard_event_handler(t_keyboard *keyboard, SDL_Event *event)
 	if (event->type != SDL_KEYDOWN && event->type != SDL_KEYUP)
 		return ;
 	ft_printf("KEY : %d\n", event->key.keysym.scancode);
-	keyboard->pressedKeys[event->key.keysym.scancode] = (event->type == SDL_KEYDOWN) ? true : false;
+	keyboard->pressedKeys[event->key.keysym.scancode] =\
+	(event->type == SDL_KEYDOWN) ? true : false;
 }
 
 BOOLEAN			get_key(t_keyboard *keyboard, unsigned int key)

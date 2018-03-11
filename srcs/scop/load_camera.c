@@ -32,7 +32,7 @@ void		build_look_at_projection(t_camera *camera)
 		destruct_matrix4f(camera->view);
 	initialize_vector3f(&to);
 	up = new_vector3f(0, 1, 0);
-	camera->projection = matrix4f_perspective(45.0f, 500 / 500, 1, 1000);
+	camera->projection = matrix4f_perspective(45.0f, 1000 / 500, 1, 1000);
 	camera->model = matrix4f_identity();
 	camera->view = matrix4f_look_at(&camera->transform.position, &to, up);
 	free(up);

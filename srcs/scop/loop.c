@@ -35,25 +35,24 @@ void			render_loop(t_scop *s)
 
 		if (get_key(s->keyboard, 81))//down
 		{
-			s->camera->transform.position.z -= 0.01f;
+			s->camera->transform.position.z -= 0.1f;
 		}
 		if (get_key(s->keyboard, 82))//up
 		{
-			s->camera->transform.position.z += 0.01f;
+			s->camera->transform.position.z += 0.1f;
 		}
 		if (get_key(s->keyboard, 80))//down
 		{
-			s->camera->transform.position.x -= 0.01f;
+			s->camera->transform.position.x -= 0.1f;
 		}
 		if (get_key(s->keyboard, 79))//up
 		{
-			s->camera->transform.position.x += 0.01f;
+			s->camera->transform.position.x += 0.1f;
 		}
 		if (get_key(s->keyboard, 44))//up
 		{
-			s->camera->transform.position.y += 0.01f;
+			s->camera->transform.position.y -= 0.1f;
 		}
-
 		while(SDL_PollEvent(&event))
 		{
 			if(event.type == SDL_QUIT)
@@ -61,6 +60,6 @@ void			render_loop(t_scop *s)
 				return ;
 			}
 		}
-		rotation += 0.1f;
+		rotation += 1.f;
 	}
 }
