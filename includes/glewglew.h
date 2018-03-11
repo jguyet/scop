@@ -44,6 +44,8 @@ typedef struct				s_mesh
 	unsigned int			*faces;
 	int						faces_length;
 	unsigned int			vao;
+	t_vector3f				max;
+	t_vector3f				min;
 }							t_mesh;
 
 typedef struct				s_glewglew
@@ -65,7 +67,6 @@ typedef struct				s_glewglew
 /*
 ** GLEWGLEW PROGRAMME
 */
-int							glewglew_build_file(t_glewglew *g, const char *filename, const char *extension);
 t_mesh						*glewglew_add_mesh(t_glewglew *g, char *name);
 t_material					*glewglew_add_material(t_glewglew *g, char *name);
 
@@ -99,5 +100,5 @@ void						destruct_material(t_material *material);
 */
 t_glewglew					*new_glewglew(void);
 void						destruct_glewglew(t_glewglew *g);
-
+int							glewglew_build_file(t_glewglew *g, const char *filename, const char *extension);
 #endif

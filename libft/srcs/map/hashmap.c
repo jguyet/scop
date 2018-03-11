@@ -62,7 +62,7 @@ t_hashmap	*newintegerhashmap(int size)
 	new->size = 0;
 	if (!(new->hashtable = (t_hash**)malloc(sizeof(t_hash*) * new->map_size)))
 		return (NULL);
-	while (i++ < new->map_size)
+	while (++i < new->map_size)
 		new->hashtable[i] = NULL;
 	return (new);
 }
@@ -90,7 +90,7 @@ t_hashmap	*newstringhashmap(int size)
 	new->size = 0;
 	if (!(new->hashtable = (t_hash**)malloc(sizeof(t_hash*) * new->map_size)))
 		return (NULL);
-	while (i++ < new->map_size)
+	while (++i < new->map_size)
 		new->hashtable[i] = NULL;
 	return (new);
 }

@@ -62,6 +62,7 @@ SRCSPROG1		=	\
 					srcs/scop/load_shaders.c									\
 					srcs/scop/load_models.c										\
 					srcs/scop/load_inputs.c										\
+					srcs/scop/load_camera.c										\
 					srcs/graphic/key/keyboard.c									\
 					srcs/graphic/key/mouse.c									\
 					srcs/shader/shader.c										\

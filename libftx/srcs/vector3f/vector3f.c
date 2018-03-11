@@ -84,7 +84,7 @@ t_vector3f		*v3f_cross(t_vector3f *v1, t_vector3f *v2)
 	return (new_vector3f(nx, ny, nz));
 }
 
-float			ft_dot(t_vector3f *r1, t_vector3f *r2)
+float			v3f_dot(t_vector3f *r1, t_vector3f *r2)
 {
 	return (r1->x * r2->x + r1->y * r2->y + r1->z * r2->z);
 }

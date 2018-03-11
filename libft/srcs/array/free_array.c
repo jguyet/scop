@@ -16,11 +16,11 @@
 
 void	free_array(char **array)
 {
-	int	i;
-	int size;
+	size_t	i;
+	size_t	size;
 
 	i = 0;
-	size = (int)array_length(array);
+	size = array_length(array);
 	while (i < size)
 		ft_strdel(&array[i++]);
 	free(array);

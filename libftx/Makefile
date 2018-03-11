@@ -37,6 +37,8 @@ SRCBASE		=	\
 				vector3f/vector3f.c						\
 				vector4f/vector4f.c						\
 				transform/transform.c					\
+				camera/look_at.c						\
+				camera/perspective.c					\
 				camera/camera.c
 
 

@@ -55,7 +55,7 @@ typedef struct	s_transform
 
 typedef struct	s_camera
 {
-	t_transform	*transform;
+	t_transform	transform;
 	t_matrix4f	*projection;
 	float		fov;
 	float		aspect_ratio;
@@ -87,7 +87,7 @@ float			v3f_magnitude(t_vector3f *v);
 t_vector3f		*v3f_normalize(t_vector3f *v);
 t_vector3f		*v3f_cross(t_vector3f *v1, t_vector3f *v2);
 t_vector3f		*v3f_mul(t_vector3f *v1, t_vector3f *v2);
-float			ft_dot(t_vector3f *r1, t_vector3f *r2);
+float			v3f_dot(t_vector3f *r1, t_vector3f *r2);
 
 /*
 ** Vector4f
@@ -132,5 +132,8 @@ void			destruct_transform(t_transform *t);
 */
 t_camera		*new_camera(void);
 void			destruct_camera(t_camera *c);
+
+t_matrix4f		*matrix4f_look_at(t_vector3f *eye, t_vector3f *center, t_vector3f *up);
+t_matrix4f		*matrix4f_perspective(float fov, float aspect_ratio, float near, float far);
 
 #endif

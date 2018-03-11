@@ -73,6 +73,7 @@ typedef struct		s_scop
 	t_hashmap		*shaders;
 	t_mouse			*mouse;
 	t_keyboard		*keyboard;
+	t_camera		*camera;
 }					t_scop;
 
 /*
@@ -123,8 +124,11 @@ void				build_context(t_scop *s);
 void				load_models(t_scop *scop);
 void				load_shaders(t_scop *scop);
 void				load_inputs(t_scop *scop);
+void				load_camera(t_scop *s);
 void				render_loop(t_scop *s);
 void				destruct_context(t_scop *s);
 void				destruct_window(t_scop *s);
+
+void				build_look_at_projection(t_camera *camera);
 
 #endif

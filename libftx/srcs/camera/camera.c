@@ -20,7 +20,7 @@ t_camera		*new_camera(void)
 
 	if ((c = (struct s_camera*)malloc(sizeof(struct s_camera))) == NULL)
 		return (NULL);
-	c->transform = new_transform();
+	initialize_transform(&c->transform);
 	c->model = NULL;
 	c->view = NULL;
 	c->projection = NULL;
@@ -34,8 +34,6 @@ t_camera		*new_camera(void)
 
 void			destruct_camera(t_camera *c)
 {
-	if (c->transform != NULL)
-		destruct_transform(c->transform);
 	if (c->view != NULL)
 		destruct_matrix4f(c->view);
 	if (c->projection != NULL)

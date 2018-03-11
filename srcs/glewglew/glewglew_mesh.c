@@ -16,7 +16,7 @@ t_mesh		*new_mesh(char *name)
 {
 	t_mesh	*mesh;
 
-	if (!(mesh = (struct s_mesh*)malloc(sizeof(struct s_mech*))))
+	if (!(mesh = (struct s_mesh*)malloc(sizeof(struct s_mesh))))
 		return (NULL);
 	mesh->name = ft_strdup(name);
 	if (!(mesh->vertexs = (float *)malloc(sizeof(float))))
@@ -31,6 +31,8 @@ t_mesh		*new_mesh(char *name)
 	if (!(mesh->faces = (unsigned int *)malloc(sizeof(unsigned int))))
 		return (NULL);
 	mesh->faces_length = 0;
+	initialize_vector3f(&mesh->max);
+	initialize_vector3f(&mesh->min);
 	return (mesh);
 }
 
@@ -50,6 +52,19 @@ void		mesh_add_vertex(t_mesh *mesh, float x, float y, float z)
 	vertex_array[i + 0] = x;
 	vertex_array[i + 1] = y;
 	vertex_array[i + 2] = z;
+
+	if (x >= mesh->max.x)
+		mesh->max.x = x;
+	if (x <= mesh->min.x)
+		mesh->min.x = x;
+	if (y >= mesh->max.y)
+		mesh->max.y = y;
+	if (y <= mesh->min.y)
+		mesh->min.y = y;
+	if (z >= mesh->max.z)
+		mesh->max.z = z;
+	if (z <= mesh->min.z)
+		mesh->min.z = z;
 	free(mesh->vertexs);
 	mesh->vertexs = vertex_array;
 	mesh->vertexs_length++;

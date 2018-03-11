@@ -42,11 +42,12 @@ void	parse_obj(t_glewglew *g, char *content)
 	char	**split_line;
 
 	i = -1;
-	split = ft_strsplit(content, '\n');
+	split = ft_split_string(content, "\n");
 	while (++i < (int)array_length(split))
 	{
 		split_line = ft_split_string(split[i], " ");
 
+		(void)g;
 		if ((int)array_length(split_line) == 0)
 		{
 			free_array(split_line);

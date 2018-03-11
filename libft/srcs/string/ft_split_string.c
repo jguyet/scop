@@ -12,13 +12,14 @@
 
 #include "libft.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 static char	*delimitor(char *s, char *c)
 {
 	int		i;
 
 	i = 0;
-	while (s[i])
+	while (s[i] != '\0')
 	{
 		if (ft_strncmp(s + i, c, ft_strlen(c)))
 			break ;
@@ -32,7 +33,7 @@ static int	first_delimitor(char *s, char **m, char *c)
 	int		i;
 
 	i = 0;
-	while (s[i])
+	while (s[i] != '\0')
 	{
 		if (!ft_strncmp(s + i, c, ft_strlen(c)))
 			break ;
@@ -42,13 +43,13 @@ static int	first_delimitor(char *s, char **m, char *c)
 	return (i);
 }
 
-static int	get_la(char *s, char *c)
+static int	get_number_of_cases(char *s, char *c)
 {
 	char	*tmp;
 	int		i;
 
 	i = 0;
-	while (s[0])
+	while (s[0] != '\0')
 	{
 		if (!(s = delimitor(s, c))[0])
 			break ;
@@ -61,17 +62,17 @@ static int	get_la(char *s, char *c)
 
 char		**ft_split_string(char const *s, char *c)
 {
-	char	**split;
-	int		i;
-	char	*tmp;
-	char	*t;
+	char		**split;
+	int			i;
+	char		*tmp;
+	char		*t;
 
-	if (!s || !(split = (char **)malloc(sizeof(char *) \
-		* (get_la((char *)s, c) + 1))))
+	if (!s || !c || !(split = (char **)malloc(sizeof(char *) \
+		* (get_number_of_cases((char *)s, c) + 1))))
 		return (NULL);
 	i = 0;
 	t = (char*)s;
-	while (t[0])
+	while (t[0] != '\0')
 	{
 		if (!(t = delimitor(t, c))[0])
 			break ;

@@ -42,6 +42,7 @@ t_mesh		*glewglew_add_mesh(t_glewglew *g, char *name)
 	t_mesh	**meshs;
 
 	mesh = new_mesh(name);
+	g->meshs_map->remove(g->meshs_map, name);
 	g->meshs_map->add(g->meshs_map, name, mesh);
 	if ((meshs = (struct s_mesh**)malloc(sizeof(struct s_mesh*) *\
 	 	(g->meshs_size + 1))) == NULL)

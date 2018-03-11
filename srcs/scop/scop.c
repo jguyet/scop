@@ -51,6 +51,8 @@ int					main(int argc, char **argv)
 	load_shaders(scop);
 	load_models(scop);
 	load_inputs(scop);
+	load_camera(scop);
+
 
 	render_loop(scop);
 
