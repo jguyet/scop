@@ -51,6 +51,15 @@ typedef	struct				s_material
 	unsigned int			ambiante_texture_id;
 }							t_material;
 
+typedef struct				s_mesh_node
+{
+	t_material				*material;
+	unsigned int			*faces;
+	int						faces_length;
+	unsigned int			vao;
+	unsigned int			material_buffer_block_location;
+}							t_mesh_node;
+
 typedef struct				s_mesh
 {
 	char					*name;
@@ -62,11 +71,11 @@ typedef struct				s_mesh
 	int						texturecoords_length;
 	unsigned int			*faces;
 	int						faces_length;
-	t_material				*material;
 	unsigned int			vao;
 	unsigned int			material_buffer_block_location;
 	t_vector3f				max;
 	t_vector3f				min;
+	t_material				*material;
 }							t_mesh;
 
 typedef struct				s_glewglew
@@ -81,6 +90,7 @@ typedef struct				s_glewglew
 	t_hashmap				*meshs_map;
 	t_mesh					*current_mesh;
 	t_material				*current_material;
+	int						faces_offset;
 }							t_glewglew;
 
 # ifdef GLEWGLEW_PROGRAMME
@@ -98,6 +108,7 @@ int							glewglew_build_material(t_glewglew *g, const char *filename);
 */
 t_mesh						*new_mesh(char *name);
 void						destruct_mesh(t_mesh *mesh);
+t_mesh_node					*mesh_add_node(t_mesh *mesh, t_material *material);
 void						mesh_add_vertex(t_mesh *mesh, float x, float y, float z);
 void						mesh_add_normal(t_mesh *mesh, float x, float y, float z);
 void						mesh_add_texturecoord(t_mesh *mesh, float x, float y);
@@ -141,4 +152,5 @@ void						destruct_material(t_material *material);
 */
 t_glewglew					*new_glewglew(void);
 void						destruct_glewglew(t_glewglew *g);
+void        				glewglew_recenter(t_mesh *mesh);
 #endif

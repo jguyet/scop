@@ -21,7 +21,34 @@ void	mesh_parser_add_mesh(t_glewglew *g, char *line)
 	split = ft_split_string(line, " ");
 	if (array_length(split) == 2)
 	{
+		if (g->current_mesh != NULL)
+		{
+			g->faces_offset += g->current_mesh->vertexs_length;
+
+			ft_printf("offset %d\n", g->faces_offset);
+		}
 		g->current_mesh = glewglew_add_mesh(g, split[1]);
+	}
+	free_array(split);
+}
+
+void	mesh_parser_use_material(t_glewglew *g, char *line)
+{
+	char		**split;
+	t_material	*material;
+
+	if (g->current_mesh == NULL)
+		return ;
+	split = ft_split_string(line, " ");
+	if ((int)array_length(split) == 2)
+	{
+		material = g->materials_map->get(g->materials_map, split[1]);
+		if (material == NULL)
+		{
+			material = g->materials_map->get(g->materials_map, "None");
+		}
+		ft_printf("Usemtl :%s\n", split[1]);
+		g->current_mesh->material = material;
 	}
 	free_array(split);
 }
@@ -67,14 +94,14 @@ void	mesh_parser_add_face(t_glewglew *g, char *line)
 	if (array_length(split) == 4)
 	{
 		mesh_add_face(g->current_mesh,\
-			atoi(split[1]) - 1, atoi(split[2]) - 1, atoi(split[3]) - 1);
+			atoi(split[1]) - (g->faces_offset + 1), atoi(split[2]) - (g->faces_offset + 1), atoi(split[3]) - (g->faces_offset + 1));
 	}
 	else if (array_length(split) == 5)
 	{
 		mesh_add_face(g->current_mesh,\
-			atoi(split[1]) - 1, atoi(split[2]) - 1, atoi(split[3]) - 1);
+			atoi(split[1]) - (g->faces_offset + 1), atoi(split[2]) - (g->faces_offset + 1), atoi(split[3]) - (g->faces_offset + 1));
 		mesh_add_face(g->current_mesh,\
-			atoi(split[1]) - 1, atoi(split[3]) - 1, atoi(split[4]) - 1);
+			atoi(split[1]) - (g->faces_offset + 1), atoi(split[3]) - (g->faces_offset + 1), atoi(split[4]) - (g->faces_offset + 1));
 	}
 	free_array(split);
 }
@@ -89,26 +116,6 @@ void	mesh_parser_add_material(t_glewglew *g, char *line)
 		g->current_material = NULL;
 		glewglew_build_material(g, split[1]);
 		g->current_material = NULL;
-	}
-	free_array(split);
-}
-
-void	mesh_parser_use_material(t_glewglew *g, char *line)
-{
-	char		**split;
-	t_material	*material;
-
-	if (g->current_mesh == NULL)
-		return ;
-	split = ft_split_string(line, " ");
-	if ((int)array_length(split) == 2)
-	{
-		material = g->materials_map->get(g->materials_map, split[1]);
-		g->current_mesh->material = material;
-
-		if (g->current_mesh->material != NULL)
-			ft_printf("OKOKOKOK\n");
-		ft_printf("use_material\n");
 	}
 	free_array(split);
 }

@@ -73,7 +73,8 @@ SRCSPROG1		=	\
 					srcs/glewglew/glewglew_mesh.c								\
 					srcs/glewglew/glewglew_mesh_parser.c						\
 					srcs/glewglew/glewglew_material_parser.c					\
-					srcs/glewglew/glewglew_material.c
+					srcs/glewglew/glewglew_material.c							\
+					srcs/glewglew/glewglew_recenter.c
 
 DSRCSPROG1		=	$(addprefix $(SRCDIR), $(SRCSPROG1))
 

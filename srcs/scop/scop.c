@@ -45,7 +45,6 @@ int					main(int argc, char **argv)
 
 	(void)argc;
 	(void)argv;
-
 	scop = static_scop();
 	build_window(scop);
 	build_context(scop);
@@ -53,7 +52,6 @@ int					main(int argc, char **argv)
 	load_models(scop);
 	load_inputs(scop);
 	load_camera(scop);
-
 
 	render_loop(scop);
 

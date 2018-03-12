@@ -33,6 +33,8 @@ t_glewglew	*new_glewglew(void)
 		malloc(sizeof(struct s_material*))) == NULL)
 		return (NULL);
 	g->materials_size = 0;
+	g->faces_offset = 0;
+	glewglew_add_material(g, "None");
 	return (g);
 }
 
@@ -56,8 +58,8 @@ t_mesh		*glewglew_add_mesh(t_glewglew *g, char *name)
 	}
 	free(g->meshs);
 	meshs[i] = mesh;
-	g->meshs_size++;
 	g->meshs = meshs;
+	g->meshs_size++;
 	return (mesh);
 }
 
@@ -79,7 +81,7 @@ t_material	*glewglew_add_material(t_glewglew *g, char *name)
 		materials[i] = g->materials[i];
 		i++;
 	}
-	free(g->meshs);
+	free(g->materials);
 	materials[i] = material;
 	g->materials_size++;
 	g->materials = materials;

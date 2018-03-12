@@ -1,6 +1,6 @@
 #version 410
 
-layout (std140) uniform u_material {
+uniform u_material {
 	vec4 diffuse;
 	vec4 ambient;
 	vec4 specular;
@@ -15,5 +15,5 @@ out vec4 o_color;
 
 void main()
 {
-	o_color = diffuse;
+	o_color = vec4(diffuse.xyz, 1.0);
 }

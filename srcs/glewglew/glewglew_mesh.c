@@ -121,6 +121,7 @@ void		mesh_add_texturecoord(t_mesh *mesh, float x, float y)
 	mesh->texturecoords_length++;
 }
 
+
 void		mesh_add_face(t_mesh *mesh, unsigned int v1, unsigned int v2,\
 	unsigned int v3)
 {
