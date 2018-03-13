@@ -20,6 +20,10 @@
 #  include <libft.h>
 #  include <printf.h>
 
+#  define INTEGER_MAPFT 'i'
+#  define STRING_MAPFT 's'
+#  define FLOAT_MAPFT 'f'
+
 # endif
 
 typedef struct		s_hash

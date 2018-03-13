@@ -6,14 +6,25 @@ uniform u_material {
 	vec4 specular;
 	vec4 emissive;
 	float shininess;
-	int diffuse_texture;
-	int specular_texture;
-	int ambiante_texture;
+	bool diffuse_texture;
+	bool specular_texture;
+	bool ambiante_texture;
 };
+
+uniform	sampler2D u_texture_diffuse;
+
+in vec2 v_vt;
 
 out vec4 o_color;
 
 void main()
 {
-	o_color = vec4(diffuse.xyz, 1.0);
+	vec3 vdiffuse = vec3(diffuse.xyz);
+	vec4 color = vec4(vdiffuse.xyz, 1.0);
+
+	if (diffuse_texture == true)
+	{
+		texture(u_texture_diffuse, v_vt.xy);// * vec4(vdiffuse.xyz, 1.0);
+	}
+	o_color = color;
 }

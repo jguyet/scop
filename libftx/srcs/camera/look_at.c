@@ -15,7 +15,15 @@
 #include <math.h>
 #include <stdlib.h>
 
-t_matrix4f	*matrix4f_look_at(t_vector3f *eye, t_vector3f *center, t_vector3f *up)
+static void	add_s_to_mat(t_matrix4f *matrix, t_vector3f *s)
+{
+	matrix->matrix[0][0] = s->x;
+	matrix->matrix[1][0] = s->y;
+	matrix->matrix[2][0] = s->z;
+}
+
+t_matrix4f	*matrix4f_look_at(t_vector3f *eye,\
+	t_vector3f *center, t_vector3f *up)
 {
 	t_matrix4f	*matrix;
 	t_vector3f	*f;
@@ -27,9 +35,7 @@ t_matrix4f	*matrix4f_look_at(t_vector3f *eye, t_vector3f *center, t_vector3f *up
 	s = v3f_normalize(v3f_cross(f, up));
 	u = v3f_cross(s, f);
 	matrix = matrix4f_identity(1.0f);
-	matrix->matrix[0][0] = s->x;
-	matrix->matrix[1][0] = s->y;
-	matrix->matrix[2][0] = s->z;
+	add_s_to_mat(matrix, s);
 	matrix->matrix[0][1] = u->x;
 	matrix->matrix[1][1] = u->y;
 	matrix->matrix[2][1] = u->z;

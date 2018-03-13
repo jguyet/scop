@@ -14,5 +14,7 @@
 
 void		load_shaders(t_scop *scop)
 {
-	scop->shaders->add(scop->shaders, "global", new_shader("shaders/global.vert", "shaders/global.frag"));
+	scop->shaders->add(scop->shaders,\
+		"global",\
+		new_shader("shaders/global.vert", "shaders/global.frag"));
 }

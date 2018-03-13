@@ -38,18 +38,33 @@ t_model			*new_model(const char *file_path, t_shader *shader)
 void			destruct_model(t_model *model)
 {
 	destruct_glewglew(model->glewglew);
+	free(model->shader);
 	free(model);
 }
 
 void			load_model_textures(t_model *model)
 {
-	(void)model;
+	int		i;
+	t_mesh	*mesh;
+
+	i = -1;
+	while (++i < model->glewglew->meshs_size)
+	{
+		mesh = model->glewglew->meshs[i];
+		if (mesh->material->block.diffuse_texture)
+		{
+			mesh->material->diffuse_texture_id =\
+			load_bmp(mesh->material->diffuse_texture);
+		}
+	}
 }
 
 void			build_model_shader(t_model *model)
 {
 	model->vertex_location = \
-	glGetAttribLocation(model->shader->id, "a_pos");
+	glGetAttribLocation(model->shader->id, "a_v");
+	model->texture_location = \
+	glGetAttribLocation(model->shader->id, "a_vt");
 	model->projection_location = \
 	glGetUniformLocation(model->shader->id, "u_projMatrix");
 	model->view_location = \
@@ -57,45 +72,70 @@ void			build_model_shader(t_model *model)
 	model->model_location = \
 	glGetUniformLocation(model->shader->id, "u_modelMatrix");
 	model->material_location = \
-	glGetUniformBlockIndex(model->shader->id,"u_material");
+	glGetUniformBlockIndex(model->shader->id, "u_material");
+	model->texture_diffuse_location = \
+	glGetUniformLocation(model->shader->id, "u_texture_diffuse");
 	glBindFragDataLocation(model->shader->id, 0, "o_color");
+}
+
+void			add_array_to_buffer_element(void *array, \
+	unsigned int array_size, unsigned int element_size, unsigned int location)
+{
+	GLuint	buffer;
+
+	glGenBuffers(1, &buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	glBufferData(GL_ARRAY_BUFFER, array_size, array, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(location);
+	glVertexAttribPointer(location, element_size, GL_FLOAT, false, 0, 0);
+}
+
+void			add_uniform_buffer(void *structure,\
+	unsigned int element_size, unsigned int *location)
+{
+	glGenBuffers(1, location);
+	glBindBuffer(GL_UNIFORM_BUFFER, *location);
+	glBufferData(GL_UNIFORM_BUFFER, element_size, structure, GL_STATIC_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+}
+
+void			build_vao(t_model *model, t_mesh *mesh)
+{
+	GLuint	buffer;
+
+	glGenVertexArrays(1, &mesh->vao);
+	glBindVertexArray(mesh->vao);
+	glGenBuffers(1, &buffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER,\
+		sizeof(unsigned short) * (3 * mesh->faces_length),\
+		&mesh->faces[0], GL_STATIC_DRAW);
+	if (mesh->vertexs_length > 0)
+	{
+		add_array_to_buffer_element(&mesh->vertexs[0],\
+			sizeof(float) * (3 * mesh->vertexs_length), 3,\
+			model->vertex_location);
+	}
+	if (mesh->texturecoords_length > 0)
+	{
+		add_array_to_buffer_element(&mesh->texturecoords[0],\
+			sizeof(float) * (2 * mesh->texturecoords_length), 2,\
+			model->texture_location);
+	}
+	glBindVertexArray(0);
+	add_uniform_buffer((void*)&mesh->material->block,\
+	sizeof(struct s_material_gl), &mesh->material_buffer_block_location);
 }
 
 void			build_model_vao(t_model *model)
 {
 	int		i;
-	t_mesh	*mesh;
-	GLuint	buffer;
 
-	i = -1;
-	while (++i < model->glewglew->meshs_size)
+	i = 0;
+	while (i < model->glewglew->meshs_size)
 	{
-		mesh = model->glewglew->meshs[i];
-
-		ft_printf("MESH: %s, NUMBER OF FACES: %d\n", mesh->name, mesh->faces_length);
-
-		glGenVertexArrays(1, &mesh->vao);
-		glBindVertexArray(mesh->vao);
-		glGenBuffers(1, &buffer);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * mesh->faces_length * 3, &mesh->faces[0], GL_STATIC_DRAW);
-		if (mesh->vertexs_length > 0)
-		{
-			//glewglew_recenter(mesh);
-			glGenBuffers(1, &buffer);
-            glBindBuffer(GL_ARRAY_BUFFER, buffer);
-            glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * mesh->vertexs_length, &mesh->vertexs[0], GL_STATIC_DRAW);
-            glEnableVertexAttribArray(model->vertex_location);
-            glVertexAttribPointer(model->vertex_location, 3, GL_FLOAT, false, 0, 0);
-		}
-		glBindVertexArray(0);
-		if (mesh->material != NULL)
-		{
-			glGenBuffers(1, &mesh->material_buffer_block_location);
-			glBindBuffer(GL_UNIFORM_BUFFER, mesh->material_buffer_block_location);
-			glBufferData(GL_UNIFORM_BUFFER, sizeof(struct s_material_gl), (void*)&mesh->material->block, GL_STATIC_DRAW);
-			glBindBuffer(GL_UNIFORM_BUFFER, 0);
-		}
+		build_vao(model, model->glewglew->meshs[i]);
+		i++;
 	}
 }
 
@@ -106,20 +146,23 @@ void			draw_model(t_model *model, t_matrix4f *m,\
 	t_mesh	*mesh;
 
 	glUseProgram(model->shader->id);
-	glUniformMatrix4fv(model->projection_location, 1, GL_FALSE, &p->matrix[0][0]);
+	glUniformMatrix4fv(model->projection_location,\
+		1, GL_FALSE, &p->matrix[0][0]);
 	glUniformMatrix4fv(model->view_location, 1, GL_FALSE, &v->matrix[0][0]);
 	glUniformMatrix4fv(model->model_location, 1, GL_FALSE, &m->matrix[0][0]);
+	glUniform1i(model->texture_diffuse_location, 0);
 	i = -1;
 	while (++i < model->glewglew->meshs_size)
 	{
 		mesh = model->glewglew->meshs[i];
-		if (mesh->material != NULL)
-		{
-			glBindBufferRange(GL_UNIFORM_BUFFER, model->material_location,\
-		 	mesh->material_buffer_block_location, 0, sizeof(struct s_material_gl));
-		}
+		glBindBufferRange(GL_UNIFORM_BUFFER, model->material_location,\
+			mesh->material_buffer_block_location,\
+			0, sizeof(struct s_material_gl));
+		if (mesh->material->block.diffuse_texture)
+			glBindTexture(GL_TEXTURE_2D, mesh->material->diffuse_texture_id);
 		glBindVertexArray(mesh->vao);
-		glDrawElements(GL_TRIANGLES, mesh->faces_length * 3, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES,\
+			mesh->faces_length * 3, GL_UNSIGNED_SHORT, 0);
 		glBindVertexArray(0);
 	}
 	glUseProgram(0);

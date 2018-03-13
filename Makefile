@@ -68,6 +68,7 @@ SRCSPROG1		=	\
 					srcs/graphic/key/mouse.c									\
 					srcs/shader/shader.c										\
 					srcs/model/model.c											\
+					srcs/bmp.c													\
 					srcs/glewglew/glewglew.c									\
 					srcs/glewglew/glewglew_builder.c							\
 					srcs/glewglew/glewglew_mesh.c								\

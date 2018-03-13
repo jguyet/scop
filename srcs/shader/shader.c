@@ -12,92 +12,82 @@
 
 #include "scop.h"
 
-t_shader		*new_shader(const char * vertex_file_path, const char * fragment_file_path)
+static BOOLEAN			compile_source_shader(unsigned int source_id,\
+	const char *source_content)
+{
+	int				log_length;
+	char			*logs;
+	BOOLEAN			result;
+
+	glShaderSource(source_id, 1, &source_content, NULL);
+	glCompileShader(source_id);
+	glGetShaderiv(source_id, GL_COMPILE_STATUS, &result);
+	glGetShaderiv(source_id, GL_INFO_LOG_LENGTH, &log_length);
+	if (log_length > 0)
+	{
+		logs = (GLchar*)malloc(log_length);
+		if (logs == NULL)
+			return (false);
+		bzero(logs, log_length);
+		glGetShaderInfoLog(source_id, log_length, &log_length, logs);
+		ft_fprintf(2, "Erreur de compilation:\n%s", logs);
+		free(logs);
+	}
+	return (result);
+}
+
+static BOOLEAN			build_shader_program(t_shader *shader)
+{
+	int				log_length;
+	char			*logs;
+	BOOLEAN			result;
+
+	shader->id = glCreateProgram();
+	glAttachShader(shader->id, shader->vertex_shader_id);
+	glAttachShader(shader->id, shader->fragment_shader_id);
+	glLinkProgram(shader->id);
+	glGetProgramiv(shader->id, GL_LINK_STATUS, &result);
+	glGetProgramiv(shader->id, GL_INFO_LOG_LENGTH, &log_length);
+	if (log_length > 0)
+	{
+		logs = (GLchar*)malloc(log_length);
+		if (logs == NULL)
+			return (false);
+		bzero(logs, log_length);
+		glGetShaderInfoLog(shader->id, log_length, &log_length, logs);
+		ft_fprintf(2, "Erreur de compilation:\n%s", logs);
+		free(logs);
+	}
+	glDetachShader(shader->id, shader->vertex_shader_id);
+	glDetachShader(shader->id, shader->fragment_shader_id);
+	return (result);
+}
+
+static unsigned int		load_program_shaders(t_shader *shader,\
+	const char *vertex_file_path, const char *fragment_file_path)
+{
+	shader->vert_content = file_get_contents(vertex_file_path);
+	shader->frag_content = file_get_contents(fragment_file_path);
+	compile_source_shader(shader->vertex_shader_id, shader->vert_content);
+	compile_source_shader(shader->fragment_shader_id, shader->frag_content);
+	build_shader_program(shader);
+	glDeleteShader(shader->vertex_shader_id);
+	glDeleteShader(shader->fragment_shader_id);
+	free(shader->vert_content);
+	free(shader->frag_content);
+	return (shader->id);
+}
+
+t_shader				*new_shader(const char *vertex_file_path,\
+	const char *fragment_file_path)
 {
 	t_shader *shader;
 
 	if ((shader = (struct s_shader*)malloc(sizeof(struct s_shader))) == NULL)
 		return (NULL);
-	shader->id = loadShaders(vertex_file_path, fragment_file_path);
+	shader->vertex_shader_id = glCreateShader(GL_VERTEX_SHADER);
+	shader->fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER);
+	shader->id = load_program_shaders(shader, vertex_file_path,\
+		fragment_file_path);
 	return (shader);
-}
-
-unsigned int	loadShaders(const char * vertex_file_path,const char * fragment_file_path)
-{
-	GLuint	VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
-	GLuint	FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
-	char	*vertFileStr = NULL;
-	char	*fragFileStr = NULL;
-	GLint	Result = GL_FALSE;
-	int		InfoLogLength = 0;
-	GLchar*	log = NULL;
-
-	vertFileStr = file_get_contents(vertex_file_path);
-	fragFileStr = file_get_contents(fragment_file_path);
-	char const * VertexSourcePointer = vertFileStr;
-
-	printf("Compiling shader : %s\n", vertex_file_path);
-	glShaderSource(VertexShaderID, 1, &VertexSourcePointer , NULL);
-	glCompileShader(VertexShaderID);
-	glGetShaderiv(VertexShaderID, GL_COMPILE_STATUS, &Result);
-	glGetShaderiv(VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-	if (InfoLogLength > 0)
-	{
-		log = (GLchar*)malloc(InfoLogLength);
-		if (log == NULL)
-		{
-			fprintf(stderr,"Erreur d'allocation de mémoire pour le log de la compilation du shader\n");
-			return 0;
-		}
-		bzero(log, InfoLogLength);
-		glGetShaderInfoLog(VertexShaderID, InfoLogLength, &InfoLogLength, log);
-		fprintf(stderr,"Erreur de compilation:\n%s",log);
-		free(log);
-	}
-	printf("Compiling shader : %s\n", fragment_file_path);
-	char const * FragmentSourcePointer = fragFileStr;
-	glShaderSource(FragmentShaderID, 1, &FragmentSourcePointer , NULL);
-	glCompileShader(FragmentShaderID);
-	glGetShaderiv(FragmentShaderID, GL_COMPILE_STATUS, &Result);
-	glGetShaderiv(FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-	if (InfoLogLength > 0)
-	{
-		log = (GLchar*)malloc(InfoLogLength);
-		if (log == NULL)
-		{
-			fprintf(stderr,"Erreur d'allocation de mémoire pour le log de la compilation du shader\n");
-			return 0;
-		}
-		bzero(log, InfoLogLength);
-		glGetShaderInfoLog(FragmentShaderID, InfoLogLength, &InfoLogLength, log);
-		fprintf(stderr,"Erreur de compilation:\n%s",log);
-		free(log);
-	}
-	GLuint ProgramID = glCreateProgram();
-	glAttachShader(ProgramID, VertexShaderID);
-	glAttachShader(ProgramID, FragmentShaderID);
-	glLinkProgram(ProgramID);
-	glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
-	glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-	if (InfoLogLength > 0)
-	{
-		log = (GLchar*)malloc(InfoLogLength);
-		bzero(log, InfoLogLength);
-		if ( log == NULL )
-		{
-			fprintf(stderr,"Erreur d'allocation de mémoire pour le log de la compilation du shader\n");
-			return 0;
-		}
-		glGetShaderInfoLog(ProgramID, InfoLogLength, &InfoLogLength, log);
-		fprintf(stderr,"Erreur de compilation:\n%s",log);
-		free(log);
-
-	}
-	free(vertFileStr);
-	free(fragFileStr);
-	glDetachShader(ProgramID, VertexShaderID);
-	glDetachShader(ProgramID, FragmentShaderID);
-	glDeleteShader(VertexShaderID);
-	glDeleteShader(FragmentShaderID);
-	return ProgramID;
 }

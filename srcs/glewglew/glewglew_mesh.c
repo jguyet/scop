@@ -21,19 +21,17 @@ t_mesh		*new_mesh(char *name)
 	if (!(mesh = (struct s_mesh*)malloc(sizeof(struct s_mesh))))
 		return (NULL);
 	mesh->name = ft_strdup(name);
-	if (!(mesh->vertexs = (float *)malloc(sizeof(float))))
-		return (NULL);
+	mesh->faces_i = newintegerhashmap(10);
+	mesh->vertexs = NULL;
+	mesh->normals = NULL;
+	mesh->texturecoords = NULL;
+	mesh->faces = NULL;
 	mesh->vertexs_length = 0;
-	if (!(mesh->normals = (float *)malloc(sizeof(float))))
-		return (NULL);
 	mesh->normals_length = 0;
-	if (!(mesh->texturecoords = (float *)malloc(sizeof(float))))
-		return (NULL);
 	mesh->texturecoords_length = 0;
-	if (!(mesh->faces = (unsigned int *)malloc(sizeof(unsigned int))))
-		return (NULL);
 	mesh->faces_length = 0;
-	mesh->material = NULL;
+	mesh->material = new_material("None");
+	mesh->current_face = NULL;
 	initialize_vector3f(&mesh->max);
 	initialize_vector3f(&mesh->min);
 	return (mesh);
@@ -73,7 +71,8 @@ void		mesh_add_vertex(t_mesh *mesh, float x, float y, float z)
 	vertex_array[i + 1] = y;
 	vertex_array[i + 2] = z;
 	mesh_calcul_position(mesh, x, y, z);
-	free(mesh->vertexs);
+	if (mesh->vertexs != NULL)
+		free(mesh->vertexs);
 	mesh->vertexs = vertex_array;
 	mesh->vertexs_length++;
 }
@@ -95,7 +94,8 @@ void		mesh_add_normal(t_mesh *mesh, float x, float y, float z)
 	normal_array[i + 0] = x;
 	normal_array[i + 1] = y;
 	normal_array[i + 2] = z;
-	free(mesh->normals);
+	if (mesh->normals != NULL)
+		free(mesh->normals);
 	mesh->normals = normal_array;
 	mesh->normals_length++;
 }
@@ -116,19 +116,19 @@ void		mesh_add_texturecoord(t_mesh *mesh, float x, float y)
 	}
 	uv_array[i + 0] = x;
 	uv_array[i + 1] = y;
-	free(mesh->texturecoords);
+	if (mesh->texturecoords != NULL)
+		free(mesh->texturecoords);
 	mesh->texturecoords = uv_array;
 	mesh->texturecoords_length++;
 }
 
-
-void		mesh_add_face(t_mesh *mesh, unsigned int v1, unsigned int v2,\
-	unsigned int v3)
+void		mesh_add_face(t_mesh *mesh, unsigned int v1,\
+	unsigned int v2, unsigned int v3)
 {
 	int				i;
-	unsigned int	*face_array;
+	unsigned short	*face_array;
 
-	if (!(face_array = (unsigned int *)malloc(sizeof(unsigned int) *\
+	if (!(face_array = (unsigned short *)malloc(sizeof(unsigned short) *\
 		((mesh->faces_length + 1) * 3))))
 		return ;
 	i = 0;
@@ -140,9 +140,42 @@ void		mesh_add_face(t_mesh *mesh, unsigned int v1, unsigned int v2,\
 	face_array[i + 0] = v1;
 	face_array[i + 1] = v2;
 	face_array[i + 2] = v3;
-	free(mesh->faces);
+	if (mesh->faces != NULL)
+		free(mesh->faces);
 	mesh->faces = face_array;
 	mesh->faces_length++;
+}
+
+void		mesh_add_vertex_indice(t_mesh *mesh, int id)
+{
+	mesh->current_face->vertexs->add(mesh->current_face->vertexs,\
+		mesh->current_face->vertexs->size, id);
+}
+
+void		mesh_add_normal_indice(t_mesh *mesh, int id)
+{
+	mesh->current_face->normals->add(mesh->current_face->normals,\
+		mesh->current_face->normals->size, id);
+}
+
+void		mesh_add_texture_position_indice(t_mesh *mesh, int id)
+{
+	mesh->current_face->texturecoords->add(mesh->current_face->texturecoords,\
+		mesh->current_face->texturecoords->size, id);
+}
+
+t_face		*mesh_add_face_indice(t_mesh *mesh)
+{
+	t_face	*face;
+
+	if (!(face = (struct s_face*)malloc(sizeof(struct s_face))))
+		return (NULL);
+	face->vertexs = newintegerhashmap(1);
+	face->normals = newintegerhashmap(1);
+	face->texturecoords = newintegerhashmap(1);
+	face->type = POLIGON_FACE;
+	mesh->faces_i->add(mesh->faces_i, mesh->faces_i->size, face);
+	return (face);
 }
 
 void		destruct_mesh(t_mesh *mesh)

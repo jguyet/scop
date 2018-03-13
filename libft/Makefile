@@ -87,7 +87,9 @@ SRCBASE		=	\
 				bonus/ft_lstiter.c							\
 				bonus/ft_lstmap.c							\
 				bonus/ft_lstnew.c							\
-				array/ft_qsort.c							\
+				array/ft_qsort/ft_qsort.c					\
+				array/ft_qsort/ft_qsort_string.c			\
+				array/ft_qsort/ft_qsort_integer.c			\
 				array/array_length.c						\
 				array/free_array.c							\
 				array/free_array_type.c						\

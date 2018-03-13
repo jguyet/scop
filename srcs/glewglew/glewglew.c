@@ -23,18 +23,14 @@ t_glewglew	*new_glewglew(void)
 	g->build_file = &glewglew_build_file;
 	g->materials_map = newstringhashmap(10);
 	g->meshs_map = newstringhashmap(10);
+	g->vertexs = newintegerhashmap(10);
+	g->texturecoords = newintegerhashmap(10);
+	g->normals = newintegerhashmap(10);
 	g->current_mesh = NULL;
 	g->current_material = NULL;
 	g->initializer.absolute_path = NULL;
-	if ((g->meshs = (struct s_mesh**)malloc(sizeof(struct s_mesh*))) == NULL)
-		return (NULL);
+	g->meshs = NULL;
 	g->meshs_size = 0;
-	if ((g->materials = (struct s_material**)\
-		malloc(sizeof(struct s_material*))) == NULL)
-		return (NULL);
-	g->materials_size = 0;
-	g->faces_offset = 0;
-	glewglew_add_material(g, "None");
 	return (g);
 }
 
@@ -56,7 +52,8 @@ t_mesh		*glewglew_add_mesh(t_glewglew *g, char *name)
 		meshs[i] = g->meshs[i];
 		i++;
 	}
-	free(g->meshs);
+	if (g->meshs != NULL)
+		free(g->meshs);
 	meshs[i] = mesh;
 	g->meshs = meshs;
 	g->meshs_size++;
@@ -66,26 +63,96 @@ t_mesh		*glewglew_add_mesh(t_glewglew *g, char *name)
 t_material	*glewglew_add_material(t_glewglew *g, char *name)
 {
 	t_material	*material;
-	int			i;
-	t_material	**materials;
 
 	material = new_material(name);
-	g->materials_map->remove(g->materials_map, name);
 	g->materials_map->add(g->materials_map, name, material);
-	if ((materials = (struct s_material**)malloc(sizeof(struct s_material*) *\
-	(g->materials_size + 1))) == NULL)
-		return (NULL);
-	i = 0;
-	while (i < g->materials_size)
+	return (material);
+}
+
+void		glewglew_add_vertex(t_glewglew *g, float x, float y, float z)
+{
+	t_vector3f	*vec;
+
+	vec = new_vector3f(x, y, z);
+	g->vertexs->add(g->vertexs, g->vertexs->size, vec);
+}
+
+void		glewglew_add_normal(t_glewglew *g, float x, float y, float z)
+{
+	t_vector3f	*vec;
+
+	vec = new_vector3f(x, y, z);
+	g->normals->add(g->normals, g->normals->size, vec);
+}
+
+void		glewglew_add_texturecoord(t_glewglew *g, float x, float y)
+{
+	t_vector3f	*vec;
+
+	vec = new_vector3f(x, y, 0.0f);
+	g->texturecoords->add(g->texturecoords, g->texturecoords->size, vec);
+}
+
+int			glewglew_get_build_indice(t_glewglew *g, t_mesh *mesh,\
+	t_face *face, int id)
+{
+	t_vector3f	*vec;
+
+	if (g->texturecoords->size > 0)
 	{
-		materials[i] = g->materials[i];
+		vec = g->texturecoords->get(g->texturecoords,\
+			face->texturecoords->get(face->texturecoords, id) - 1);
+		mesh_add_texturecoord(mesh, vec->x, vec->y);
+	}
+	else if (mesh->material->block.diffuse_texture)
+	{
+		mesh_add_texturecoord(mesh,\
+			id % 3 == 1 ? 1.0f : 0.0f, id % 3 == 2 ? 1.0f : 0.0f);
+	}
+	vec = g->vertexs->get(g->vertexs,\
+		face->vertexs->get(face->vertexs, id) - 1);
+	mesh_add_vertex(mesh, vec->x, vec->y, vec->z);
+	return (mesh->vertexs_length - 1);
+}
+
+void		glewglew_build_one_face(t_glewglew *g, t_mesh *mesh, t_face *face)
+{
+	int	veco[3];
+
+	veco[0] = glewglew_get_build_indice(g, mesh, face, 0);
+	veco[1] = glewglew_get_build_indice(g, mesh, face, 1);
+	veco[2] = glewglew_get_build_indice(g, mesh, face, 2);
+	mesh_add_face(mesh, veco[0], veco[1], veco[2]);
+	if (face->vertexs->size > 3)
+	{
+		veco[0] = glewglew_get_build_indice(g, mesh, face, 0);
+		veco[1] = glewglew_get_build_indice(g, mesh, face, 2);
+		veco[2] = glewglew_get_build_indice(g, mesh, face, 3);
+		mesh_add_face(mesh, veco[0], veco[1], veco[2]);
+	}
+}
+
+void		glewglew_build_faces(t_glewglew *g)
+{
+	t_mesh		*mesh;
+	t_face		*face;
+	int			i;
+	int			o;
+
+	i = 0;
+	while (i < g->meshs_size)
+	{
+		mesh = g->meshs[i];
+		o = 0;
+		while (o < mesh->faces_i->size)
+		{
+			face = mesh->faces_i->get(mesh->faces_i, o);
+			glewglew_build_one_face(g, mesh, face);
+			o++;
+		}
+		glewglew_recenter(mesh);
 		i++;
 	}
-	free(g->materials);
-	materials[i] = material;
-	g->materials_size++;
-	g->materials = materials;
-	return (material);
 }
 
 void		destruct_glewglew(t_glewglew *g)
@@ -98,15 +165,12 @@ void		destruct_glewglew(t_glewglew *g)
 		destruct_mesh(g->meshs[i]);
 		i++;
 	}
-	free(g->meshs);
-	i = 0;
-	while (i < g->materials_size)
-	{
-		destruct_material(g->materials[i]);
-		i++;
-	}
-	free(g->materials);
+	if (g->meshs != NULL)
+		free(g->meshs);
 	destruct_hashmap(g->materials_map);
 	destruct_hashmap(g->meshs_map);
+	destruct_hashmap(g->vertexs);
+	destruct_hashmap(g->texturecoords);
+	destruct_hashmap(g->normals);
 	free(g);
 }

@@ -14,15 +14,8 @@
 
 #include "glewglew.h"
 
-int		glewglew_build_file(t_glewglew *g, const char *filename)
+void	glewglew_build_lexer_obj_methods(t_glewglew *g)
 {
-	char	*path;
-	char	*content;
-
-	path = ft_strjoin(g->initializer.absolute_path, filename);
-	content = file_get_contents(path);
-	content = ft_replace(content, "\t", "");
-	content = ft_replace(content, "\r", "");
 	g->initializer.lexer_obj = newstringhashmap(10);
 	g->initializer.lexer_obj->add(\
 		g->initializer.lexer_obj, "o", &mesh_parser_add_mesh);
@@ -38,10 +31,21 @@ int		glewglew_build_file(t_glewglew *g, const char *filename)
 		g->initializer.lexer_obj, "mtllib", &mesh_parser_add_material);
 	g->initializer.lexer_obj->add(\
 		g->initializer.lexer_obj, "usemtl", &mesh_parser_use_material);
+}
+
+int		glewglew_build_file(t_glewglew *g, const char *filename)
+{
+	char	*path;
+	char	*content;
+
+	path = ft_strjoin(g->initializer.absolute_path, filename);
+	content = file_get_contents(path);
+	glewglew_build_lexer_obj_methods(g);
 	parse_obj(g, content);
 	free(content);
 	free(path);
 	destruct_hashmap(g->initializer.lexer_obj);
+	glewglew_build_faces(g);
 	return (1);
 }
 
@@ -57,11 +61,13 @@ void	parse_obj(t_glewglew *g, char *content)
 	while (++i < (int)array_length(split))
 	{
 		split_line = ft_split_string(split[i], " ");
-		if ((int)array_length(split_line) == 0)
+		if (array_length(split_line) == 0)
 		{
 			free_array(split_line);
 			continue ;
 		}
+		split[i] = ft_replace(split[i], "\t", "");
+		split[i] = ft_replace(split[i], "\r", "");
 		ptr = g->initializer.lexer_obj->get(g->initializer.lexer_obj,\
 			split_line[0]);
 		if (ptr != NULL)
@@ -78,8 +84,6 @@ int		glewglew_build_material(t_glewglew *g, const char *filename)
 
 	path = ft_strjoin(g->initializer.absolute_path, filename);
 	content = file_get_contents(path);
-	content = ft_replace(content, "\t", "");
-	content = ft_replace(content, "\r", "");
 	g->initializer.lexer_material = newstringhashmap(10);
 	g->initializer.lexer_material->add(\
 		g->initializer.lexer_material, "newmtl", &material_parser_new_material);
@@ -90,7 +94,8 @@ int		glewglew_build_material(t_glewglew *g, const char *filename)
 	g->initializer.lexer_material->add(\
 		g->initializer.lexer_material, "Ks", &material_parser_add_specular);
 	g->initializer.lexer_material->add(\
-		g->initializer.lexer_material, "map_kd", &material_parser_add_diffuse_texture);
+		g->initializer.lexer_material, "map_Kd",\
+		&material_parser_add_diffuse_texture);
 	parse_material(g, content);
 	free(content);
 	free(path);
@@ -115,6 +120,8 @@ void	parse_material(t_glewglew *g, char *content)
 			free_array(split_line);
 			continue ;
 		}
+		split[i] = ft_replace(split[i], "\t", "");
+		split[i] = ft_replace(split[i], "\r", "");
 		ptr = g->initializer.lexer_material->get(g->initializer.lexer_material,\
 			split_line[0]);
 		if (ptr != NULL)

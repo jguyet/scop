@@ -133,7 +133,9 @@ void			destruct_transform(t_transform *t);
 t_camera		*new_camera(void);
 void			destruct_camera(t_camera *c);
 
-t_matrix4f		*matrix4f_look_at(t_vector3f *eye, t_vector3f *center, t_vector3f *up);
-t_matrix4f		*matrix4f_perspective(float fov, float aspect_ratio, float near, float far);
+t_matrix4f		*matrix4f_look_at(t_vector3f *eye,\
+				t_vector3f *center, t_vector3f *up);
+t_matrix4f		*matrix4f_perspective(float fov,\
+				float aspect_ratio, float near, float far);
 
 #endif

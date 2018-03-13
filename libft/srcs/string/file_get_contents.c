@@ -16,24 +16,24 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <printf.h>
+#include <stdlib.h>
 
 static char	*read_contents(int fd, int size)
 {
-	int		i;
 	int		ret;
-	char	buffer[size + 1];
-	char	*result;
+	char	*buffer;
 
-	i = 0;
+	buffer = ft_strnew(size);
 	ret = read(fd, buffer, size);
 	if (ret == -1)
+	{
+		free(buffer);
 		return (ft_strnew(0));
-	result = ft_strnew(ret);
-	ft_memcpy(result, buffer, ret);
-	return (result);
+	}
+	return (buffer);
 }
 
-char	*file_get_contents(const char *filename)
+char		*file_get_contents(const char *filename)
 {
 	int			fd;
 	struct stat	st;

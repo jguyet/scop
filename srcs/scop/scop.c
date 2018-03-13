@@ -23,7 +23,7 @@ t_scop				*new_scop(void)
 		return (NULL);
 	s->models = newstringhashmap(10);
 	s->shaders = newstringhashmap(10);
-	s->screen = new_screen(1280, 750);
+	s->screen = new_screen(1280, 1280);
 	return (s);
 }
 
@@ -52,9 +52,7 @@ int					main(int argc, char **argv)
 	load_models(scop);
 	load_inputs(scop);
 	load_camera(scop);
-
 	render_loop(scop);
-
 	destruct_context(scop);
 	destruct_window(scop);
 	destruct_scop(scop);

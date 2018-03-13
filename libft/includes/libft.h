@@ -157,12 +157,16 @@ char				*ft_uitoa(unsigned long long int c);
 /*
 ** ARRAYS
 */
-
+void				ft_qsort_string(char **base, size_t mmemb,\
+					int (*compar)(const void *, const void *), char **tab);
+void				ft_qsort_integer(int *base, size_t mmemb,\
+					int (*compar)(const void *, const void *), int *tab);
 void				ft_qsort(void *base, size_t mmemb, char *type,\
 					int(*compar)(const void *, const void *));
 size_t				array_length(char **array);
 void				free_array(char **array);
-void				free_array_type(void **array, unsigned int size, const char *type);
+void				free_array_type(void **array,\
+					unsigned int size, const char *type);
 
 /*
 ** FILES

@@ -20,13 +20,13 @@ t_mouse		*new_mouse(void)
 	if ((mouse = (struct s_mouse*)malloc(sizeof(struct s_mouse))) == NULL)
 		return (NULL);
 	initialize_vector2f(&mouse->position);
-	initialize_vector2f(&mouse->lastPosition);
+	initialize_vector2f(&mouse->lastposition);
 	mouse->handle_motion_event = &mouse_motion_event_handler;
 	mouse->handle_button_event = &mouse_button_event_handler;
 	i = 0;
 	while (i < 8)
 	{
-		mouse->pressedButton[i++] = false;
+		mouse->pressedbutton[i++] = false;
 	}
 	return (mouse);
 }
@@ -45,11 +45,11 @@ void		mouse_motion_event_handler(t_mouse *mouse, SDL_Event *event)
 		return ;
 	mw = 500;
 	mh = 500;
-	mouse->lastPosition.x = mouse->position.x;
-	mouse->lastPosition.y = mouse->position.y;
+	mouse->lastposition.x = mouse->position.x;
+	mouse->lastposition.y = mouse->position.y;
 	mouse->position.x = -(event->motion.x - mw);
 	mouse->position.y = -(event->motion.y - mh);
-	if (mouse->lastPosition.x == 0 && mouse->lastPosition.y == 0)
+	if (mouse->lastposition.x == 0 && mouse->lastposition.y == 0)
 	{
 		return ;
 	}
@@ -59,11 +59,11 @@ void		mouse_button_event_handler(t_mouse *mouse, SDL_Event *event)
 {
 	if (event->type != SDL_MOUSEBUTTONDOWN && event->type != SDL_MOUSEBUTTONUP)
 		return ;
-	mouse->pressedButton[event->button.button] = \
+	mouse->pressedbutton[event->button.button] = \
 	(event->type == SDL_MOUSEBUTTONDOWN) ? true : false;
 }
 
 BOOLEAN		get_button(t_mouse *mouse, unsigned int button)
 {
-	return (mouse->pressedButton[button]);
+	return (mouse->pressedbutton[button]);
 }

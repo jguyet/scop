@@ -60,7 +60,7 @@ void	material_parser_add_ambiante(t_glewglew *g, char *line)
 		g->current_material->block.ambiante[0] = atof(split[1]);
 		g->current_material->block.ambiante[1] = atof(split[2]);
 		g->current_material->block.ambiante[2] = atof(split[3]);
-		g->current_material->block.ambiante[3]= 1.0f;
+		g->current_material->block.ambiante[3] = 1.0f;
 		ft_printf("ADD ambient\n");
 	}
 	free_array(split);
@@ -91,7 +91,7 @@ void	material_parser_add_diffuse_texture(t_glewglew *g, char *line)
 	if (g->current_material == NULL)
 		return ;
 	split = ft_split_string(line, " ");
-	if (array_length(split) == 1)
+	if (array_length(split) == 2)
 	{
 		g->current_material->diffuse_texture = ft_strdup(split[1]);
 		g->current_material->block.diffuse_texture = true;
@@ -107,7 +107,7 @@ void	material_parser_add_specular_texture(t_glewglew *g, char *line)
 	if (g->current_material == NULL)
 		return ;
 	split = ft_split_string(line, " ");
-	if (array_length(split) == 1)
+	if (array_length(split) == 2)
 	{
 		g->current_material->specular_texture = ft_strdup(split[1]);
 		g->current_material->block.specular_texture = true;
@@ -123,7 +123,7 @@ void	material_parser_add_ambient_texture(t_glewglew *g, char *line)
 	if (g->current_material == NULL)
 		return ;
 	split = ft_split_string(line, " ");
-	if (array_length(split) == 1)
+	if (array_length(split) == 2)
 	{
 		g->current_material->ambiante_texture = ft_strdup(split[1]);
 		g->current_material->block.ambiante_texture = true;

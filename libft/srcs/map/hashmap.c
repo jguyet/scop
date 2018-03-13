@@ -24,7 +24,7 @@ int			parsekey(t_hashmap *table, void *key)
 
 	i = 0;
 	hashkey = 0;
-	if (table->type == 's')
+	if (table->type == STRING_MAPFT)
 	{
 		while (hashkey < ULONG_MAX && (*(char*)key))
 		{
@@ -34,7 +34,7 @@ int			parsekey(t_hashmap *table, void *key)
 			key++;
 		}
 	}
-	else if (table->type == 'i')
+	else if (table->type == INTEGER_MAPFT)
 		hashkey = (unsigned long int)key;
 	return (hashkey % table->map_size);
 }
@@ -58,7 +58,7 @@ t_hashmap	*newintegerhashmap(int size)
 	new->foreach = foreach_hashtable;
 	new->remove = remove_element_on_hashtable;
 	new->map_size = size;
-	new->type = 'i';
+	new->type = INTEGER_MAPFT;
 	new->size = 0;
 	if (!(new->hashtable = (t_hash**)malloc(sizeof(t_hash*) * new->map_size)))
 		return (NULL);
@@ -86,7 +86,7 @@ t_hashmap	*newstringhashmap(int size)
 	new->foreach = foreach_hashtable;
 	new->remove = remove_element_on_hashtable;
 	new->map_size = size;
-	new->type = 's';
+	new->type = STRING_MAPFT;
 	new->size = 0;
 	if (!(new->hashtable = (t_hash**)malloc(sizeof(t_hash*) * new->map_size)))
 		return (NULL);

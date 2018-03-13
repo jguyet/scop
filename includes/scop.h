@@ -22,22 +22,38 @@
 # include <libftx.h>
 
 # ifdef linux
-#   include <GL/glew.h>
-#   include <SDL2/SDL.h>
+#  include <GL/glew.h>
+#  include <SDL2/SDL.h>
 # endif
 
 # ifdef __APPLE__
-#   include <OpenGL/gl3.h>
-#   include <SDL2/SDL.h>
+#  include <OpenGL/gl3.h>
+#  include <SDL2/SDL.h>
 # endif
 
 # include <stdlib.h>
 
 # include "glewglew.h"
 
+# define DEGREE_TO_RADIAN (MATHF_PI * 2) / 360
+
+typedef struct		s_bmp
+{
+	unsigned char	header[54];
+	unsigned int	datapos;
+	unsigned int	width;
+	unsigned int	height;
+	unsigned int	imagesize;
+	unsigned char	*data;
+}					t_bmp;
+
 typedef struct		s_shader
 {
 	unsigned int	id;
+	unsigned int	vertex_shader_id;
+	unsigned int	fragment_shader_id;
+	char			*vert_content;
+	char			*frag_content;
 }					t_shader;
 
 typedef struct		s_model
@@ -45,25 +61,27 @@ typedef struct		s_model
 	t_shader		*shader;
 	t_glewglew		*glewglew;
 	unsigned int	vertex_location;
+	unsigned int	texture_location;
 	unsigned int	projection_location;
 	unsigned int	view_location;
 	unsigned int	model_location;
 	unsigned int	material_location;
+	unsigned int	texture_diffuse_location;
 }					t_model;
 
 typedef struct		s_keyboard
 {
 	void			(*handle_event)(struct s_keyboard*, SDL_Event *);
-	BOOLEAN			pressedKeys[301];
+	BOOLEAN			pressedkeys[301];
 }					t_keyboard;
 
 typedef struct		s_mouse
 {
 	t_vector2f		position;
-	t_vector2f		lastPosition;
+	t_vector2f		lastposition;
 	void			(*handle_motion_event)(struct s_mouse*, SDL_Event *);
 	void			(*handle_button_event)(struct s_mouse*, SDL_Event *);
-	BOOLEAN			pressedButton[8];
+	BOOLEAN			pressedbutton[8];
 }					t_mouse;
 
 typedef struct		s_screen
@@ -87,11 +105,15 @@ typedef struct		s_scop
 }					t_scop;
 
 /*
+** BMP
+*/
+GLuint				load_bmp(const char *imagepath);
+
+/*
 ** SHADERS
 */
-t_shader			*new_shader(const char * vertex_file_path, const char * fragment_file_path);
-unsigned int		loadShaders(const char * vertex_file_path,const char * fragment_file_path);
-
+t_shader			*new_shader(const char *vertex_file_path,\
+					const char *fragment_file_path);
 /*
 **	MODELS
 */
@@ -100,7 +122,8 @@ void				destruct_model(t_model *model);
 void				load_model_textures(t_model *model);
 void				build_model_shader(t_model *model);
 void				build_model_vao(t_model *model);
-void				draw_model(t_model *model, t_matrix4f *m, t_matrix4f *v, t_matrix4f *p);
+void				draw_model(t_model *model,\
+					t_matrix4f *m, t_matrix4f *v, t_matrix4f *p);
 
 /*
 ** MOUSE
@@ -108,8 +131,10 @@ void				draw_model(t_model *model, t_matrix4f *m, t_matrix4f *v, t_matrix4f *p);
 t_mouse				*new_mouse(void);
 void				destruct_mouse(t_mouse *mouse);
 BOOLEAN				get_button(t_mouse *mouse, unsigned int button);
-void				mouse_motion_event_handler(t_mouse *mouse, SDL_Event *event);
-void				mouse_button_event_handler(t_mouse *mouse, SDL_Event *event);
+void				mouse_motion_event_handler(t_mouse *mouse,\
+					SDL_Event *event);
+void				mouse_button_event_handler(t_mouse *mouse,\
+					SDL_Event *event);
 
 /*
 ** KEYBOARD
@@ -117,7 +142,8 @@ void				mouse_button_event_handler(t_mouse *mouse, SDL_Event *event);
 t_keyboard			*new_keyboard(void);
 void				destruct_keyboard(t_keyboard *keyboard);
 BOOLEAN				get_key(t_keyboard *keyboard, unsigned int key);
-void				keyboard_event_handler(t_keyboard *keyboard, SDL_Event *event);
+void				keyboard_event_handler(t_keyboard *keyboard,\
+					SDL_Event *event);
 
 /*
 ** SCREEN
@@ -145,6 +171,7 @@ void				render_loop(t_scop *s);
 void				destruct_context(t_scop *s);
 void				destruct_window(t_scop *s);
 
-void				build_look_at_projection(t_camera *camera, t_screen *screen);
+void				build_look_at_projection(t_camera *camera,\
+					t_screen *screen);
 
 #endif

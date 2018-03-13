@@ -29,7 +29,8 @@ void		build_look_at_projection(t_camera *camera, t_screen *screen)
 		destruct_matrix4f(camera->view);
 	initialize_vector3f(&to);
 	up = new_vector3f(0, 1, 0);
-	camera->projection = matrix4f_perspective(45.0f, screen->width / screen->height, 0.1f, 500.f);
+	camera->projection = \
+	matrix4f_perspective(45.0f, screen->width / screen->height, 0.1f, 500.f);
 	camera->view = matrix4f_look_at(&camera->transform.position, &to, up);
 	free(up);
 }

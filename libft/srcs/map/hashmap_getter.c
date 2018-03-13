@@ -28,9 +28,9 @@ t_hash		*get_hash_element(t_hashmap *table, void *key)
 		element = table->hashtable[hashindex];
 		while (element != NULL)
 		{
-			if (table->type == 'i' && element->key == key)
+			if (table->type == INTEGER_MAPFT && element->key == key)
 				return (element);
-			else if (table->type == 's'\
+			else if (table->type == STRING_MAPFT\
 				&& ft_strcmp((char*)element->key, key) == 0)
 				return (element);
 			element = element->next;
@@ -54,9 +54,9 @@ void		*get_hash_value(t_hashmap *table, void *key)
 		element = table->hashtable[hashindex];
 		while (element != NULL)
 		{
-			if (table->type == 'i' && element->key == key)
+			if (table->type == INTEGER_MAPFT && element->key == key)
 				return (element->data);
-			else if (table->type == 's'\
+			else if (table->type == STRING_MAPFT\
 				&& ft_strcmp((char*)element->key, key) == 0)
 				return (element->data);
 			element = element->next;
