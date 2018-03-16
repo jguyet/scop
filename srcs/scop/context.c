@@ -18,8 +18,6 @@ void				build_context(t_scop *s)
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,\
 		SDL_GL_CONTEXT_PROFILE_CORE);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 32);
 	s->context = SDL_GL_CreateContext(s->window);
 	if (!s->context)
 	{
@@ -29,6 +27,8 @@ void				build_context(t_scop *s)
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_MULTISAMPLE);
+	glEnable(GL_CULL_FACE);
+	glDepthFunc(GL_LESS);
 	SDL_GL_SetSwapInterval(1);
 }
 

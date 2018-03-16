@@ -31,6 +31,8 @@ BOOLEAN		remove_element_on_hashtable(t_hashmap *table, void *key)
 		element->prev->next = element->next;
 	else
 		table->hashtable[hashindex] = element->next;
+	if (table->type == STRING_MAPFT)
+		free(element->key);
 	free(element);
 	table->size--;
 	return (true);
@@ -40,7 +42,8 @@ BOOLEAN		remove_element_on_hashtable(t_hashmap *table, void *key)
 ** CLEAR METHOD
 */
 
-void		clear_hashtable(t_hashmap *table)
+void		clear_hashtable(t_hashmap *table,\
+	void (*keyfunc)(), void (*valuefunc)())
 {
 	int		i;
 	t_hash	*element;
@@ -55,6 +58,10 @@ void		clear_hashtable(t_hashmap *table)
 			while (element != NULL)
 			{
 				tmp = element->next;
+				if (keyfunc != NULL)
+					keyfunc(element->key);
+				if (valuefunc != NULL)
+					valuefunc(element->data);
 				free(element);
 				element = tmp;
 			}

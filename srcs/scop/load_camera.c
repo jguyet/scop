@@ -12,10 +12,29 @@
 
 #include "scop.h"
 
+void		load_camera_position(t_scop *scop, t_camera *camera)
+{
+	char	*positions[3];
+
+	positions[0] = scop->properties->get(scop->properties,\
+		"scop.camera.transform.position.x");
+	positions[1] = scop->properties->get(scop->properties,\
+		"scop.camera.transform.position.y");
+	positions[2] = scop->properties->get(scop->properties,\
+		"scop.camera.transform.position.z");
+	if (positions[0] != NULL)
+		camera->transform.position.x = atof(positions[0]);
+	if (positions[1] != NULL)
+		camera->transform.position.y = atof(positions[1]);
+	if (positions[2] != NULL)
+		camera->transform.position.z = atof(positions[2]);
+}
+
 void		load_camera(t_scop *s)
 {
 	s->camera = new_camera();
 	build_look_at_projection(s->camera, s->screen);
+	load_camera_position(s, s->camera);
 }
 
 void		build_look_at_projection(t_camera *camera, t_screen *screen)

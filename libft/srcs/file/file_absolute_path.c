@@ -23,10 +23,8 @@ char			*file_absolute_path(const char *file_path)
 	i = 0;
 	split_size = array_length(split);
 	absolute_path = ft_strnew(0);
-	while (i < split_size)
+	while (i < (split_size - 1))
 	{
-		if (i == (split_size - 1) && ft_strcontains(split[i], "."))
-			break ;
 		absolute_path = \
 			ft_dstrjoin(ft_dstrjoin(absolute_path, split[i], 1), "/", 1);
 		i++;

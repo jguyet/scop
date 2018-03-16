@@ -20,6 +20,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
+# include <math.h>
 
 # define POLIGON_FACE 1
 # define LINE_FACE 2
@@ -62,6 +63,7 @@ typedef struct				s_face
 	t_hashmap				*texturecoords;
 	t_hashmap				*normals;
 	int						type;
+	t_vector3f				color;
 }							t_face;
 
 typedef struct				s_mesh
@@ -71,9 +73,11 @@ typedef struct				s_mesh
 	unsigned short			faces_length;
 	float					*vertexs;
 	float					*normals;
+	float					*colors;
 	float					*texturecoords;
 	int						vertexs_length;
 	int						normals_length;
+	int						colors_length;
 	int						texturecoords_length;
 	t_hashmap				*faces_i;
 	unsigned int			vao;
@@ -135,6 +139,7 @@ void						mesh_add_vertex_indice(t_mesh *mesh, int id);
 void						mesh_add_normal_indice(t_mesh *mesh, int id);
 void						mesh_add_texture_position_indice(t_mesh *mesh,\
 							int id);
+void						mesh_add_color(t_mesh *mesh, float x, float y, float z);
 t_face						*mesh_add_face_indice(t_mesh *mesh);
 
 /*

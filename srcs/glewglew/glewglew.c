@@ -104,11 +104,12 @@ int			glewglew_get_build_indice(t_glewglew *g, t_mesh *mesh,\
 			face->texturecoords->get(face->texturecoords, id) - 1);
 		mesh_add_texturecoord(mesh, vec->x, vec->y);
 	}
-	else if (mesh->material->block.diffuse_texture)
+	else
 	{
 		mesh_add_texturecoord(mesh,\
 			id % 3 == 1 ? 1.0f : 0.0f, id % 3 == 2 ? 1.0f : 0.0f);
 	}
+	mesh_add_color(mesh, face->color.x, face->color.y, face->color.z);
 	vec = g->vertexs->get(g->vertexs,\
 		face->vertexs->get(face->vertexs, id) - 1);
 	mesh_add_vertex(mesh, vec->x, vec->y, vec->z);
@@ -157,20 +158,13 @@ void		glewglew_build_faces(t_glewglew *g)
 
 void		destruct_glewglew(t_glewglew *g)
 {
-	int i;
-
-	i = 0;
-	while (i < g->meshs_size)
-	{
-		destruct_mesh(g->meshs[i]);
-		i++;
-	}
 	if (g->meshs != NULL)
 		free(g->meshs);
-	destruct_hashmap(g->materials_map);
-	destruct_hashmap(g->meshs_map);
-	destruct_hashmap(g->vertexs);
-	destruct_hashmap(g->texturecoords);
-	destruct_hashmap(g->normals);
+	destruct_hashmap(g->materials_map, free, destruct_material);
+	destruct_hashmap(g->meshs_map, free, destruct_mesh);
+	destruct_hashmap(g->vertexs, NULL, destruct_vector3f);
+	destruct_hashmap(g->texturecoords, NULL, destruct_vector3f);
+	destruct_hashmap(g->normals, NULL, destruct_vector3f);
+	free(g->initializer.absolute_path);
 	free(g);
 }

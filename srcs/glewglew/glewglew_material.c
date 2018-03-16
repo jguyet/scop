@@ -55,6 +55,12 @@ void			initialize_material(t_material *material)
 
 void			destruct_material(t_material *material)
 {
-	ft_strdel(&material->name);
+	if (material->diffuse_texture != NULL)
+		free(material->diffuse_texture);
+	if (material->specular_texture != NULL)
+		free(material->specular_texture);
+	if (material->ambiante_texture != NULL)
+		free(material->ambiante_texture);
+	free(material->name);
 	free(material);
 }

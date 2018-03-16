@@ -29,22 +29,25 @@ GLuint		bind_texture(unsigned int width,\
 	return (textureid);
 }
 
-BOOLEAN		build_header(t_bmp *bmp, FILE *file)
+BOOLEAN		build_header(t_bmp *bmp, FILE *file, const char *imagepath)
 {
 	if (!file)
 	{
-		printf("Image could not be opened\n");
+		ft_printf("Image \"%s\" doesn't exists\n", imagepath);
 		return (false);
 	}
 	if (fread(bmp->header, 1, 54, file) != 54)
 	{
-		printf("Not a correct BMP file Header too small\n");
+		ft_printf("Image \"%s\" as not a correct BMP file Header too small\n",\
+			imagepath);
 		fclose(file);
 		return (false);
 	}
 	if (bmp->header[0] != 'B' || bmp->header[1] != 'M')
 	{
-		printf("Not a correct BMP file No BM Magick Number\n");
+		ft_printf(\
+			"Image \"%s\" as not a correct BMP file No BM Magick Number\n",\
+			imagepath);
 		fclose(file);
 		return (false);
 	}
@@ -63,7 +66,8 @@ BOOLEAN		build_data(t_bmp *bmp, FILE *file)
 		bmp->datapos = 54;
 	if (bmp->width % 2 != 0 || bmp->height % 2 != 0)
 	{
-		printf("Warning strange image size: %d %d \n", bmp->width, bmp->height);
+		ft_printf("Warning strange image size: %d %d \n",\
+		bmp->width, bmp->height);
 	}
 	bmp->data = (unsigned char*)malloc(bmp->imagesize);
 	if (!bmp->data)
@@ -77,9 +81,18 @@ GLuint		load_bmp(const char *imagepath)
 	struct s_bmp	bmp;
 	GLuint			textureid;
 	FILE			*file;
+	char			**split;
 
+	split = ft_split_string(imagepath, ".");
+	if (ft_strcmp(split[array_length(split) - 1], "bmp") != 0)
+	{
+		ft_printf("\"%s\" Not a correct BMP file\n", imagepath);
+		free_array(split);
+		return (0);
+	}
+	free_array(split);
 	file = fopen(imagepath, "rb");
-	if (build_header(&bmp, file) == false)
+	if (build_header(&bmp, file, imagepath) == false)
 		return (0);
 	build_data(&bmp, file);
 	fclose(file);

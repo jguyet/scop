@@ -163,14 +163,3 @@ t_vector4f		*apply_matrix4f_to_vertex4f(t_matrix4f *m, t_vector4f *src)
 	destruct_vector4f(v);
 	return (dst);
 }
-
-t_matrix4f		*matrix4f_translate(t_vector3f *v)
-{
-	t_matrix4f	*m;
-
-	m = matrix4f_identity(1.0f);
-	m->matrix[0][3] = v->x;
-	m->matrix[1][3] = v->y;
-	m->matrix[2][3] = v->z;
-	return (m);
-}

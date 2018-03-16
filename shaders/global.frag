@@ -14,17 +14,21 @@ uniform u_material {
 uniform	sampler2D u_texture_diffuse;
 
 in vec2 v_vt;
+in vec3	v_color;
 
 out vec4 o_color;
 
 void main()
 {
-	vec3 vdiffuse = vec3(diffuse.xyz);
-	vec4 color = vec4(vdiffuse.xyz, 1.0);
+	vec4 color;
 
 	if (diffuse_texture == true)
 	{
-		texture(u_texture_diffuse, v_vt.xy);// * vec4(vdiffuse.xyz, 1.0);
+		color = vec4(texture(u_texture_diffuse, v_vt.st).rgb, 1);
+	}
+	else
+	{
+		color = vec4(v_color.xyz, 1.0);
 	}
 	o_color = color;
 }

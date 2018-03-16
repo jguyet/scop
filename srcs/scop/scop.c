@@ -21,9 +21,12 @@ t_scop				*new_scop(void)
 		return (s);
 	if ((s = (struct s_scop*)malloc(sizeof(struct s_scop))) == NULL)
 		return (NULL);
-	s->models = newstringhashmap(10);
-	s->shaders = newstringhashmap(10);
+	s->model = NULL;
+	s->shader = NULL;
 	s->screen = new_screen(1280, 1280);
+	s->texture = true;
+	s->last_time = 0;
+	s->properties = new_propeties("scop.properties");
 	return (s);
 }
 
@@ -34,8 +37,13 @@ t_scop				*static_scop(void)
 
 void				destruct_scop(t_scop *scop)
 {
-	destruct_hashmap(scop->models);
-	destruct_hashmap(scop->shaders);
+	destruct_properties(scop->properties);
+	if (scop->model != NULL)
+		destruct_model(scop->model);
+	if (scop->screen != NULL)
+		destruct_screen(scop->screen);
+	if (scop->shader != NULL)
+		free(scop->shader);
 	free(scop);
 }
 
@@ -45,6 +53,7 @@ int					main(int argc, char **argv)
 
 	(void)argc;
 	(void)argv;
+	srand(time(NULL));
 	scop = static_scop();
 	build_window(scop);
 	build_context(scop);

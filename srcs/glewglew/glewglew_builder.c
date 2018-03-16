@@ -44,7 +44,7 @@ int		glewglew_build_file(t_glewglew *g, const char *filename)
 	parse_obj(g, content);
 	free(content);
 	free(path);
-	destruct_hashmap(g->initializer.lexer_obj);
+	destruct_hashmap(g->initializer.lexer_obj, free, NULL);
 	glewglew_build_faces(g);
 	return (1);
 }
@@ -99,7 +99,7 @@ int		glewglew_build_material(t_glewglew *g, const char *filename)
 	parse_material(g, content);
 	free(content);
 	free(path);
-	destruct_hashmap(g->initializer.lexer_material);
+	destruct_hashmap(g->initializer.lexer_material, free, NULL);
 	return (1);
 }
 

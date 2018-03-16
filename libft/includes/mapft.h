@@ -43,7 +43,6 @@ typedef struct		s_hashmap
 	char			*(*tostring)();
 	void			(*clear)();
 	void			(*foreach)();
-	void			(*foreach1)();
 	int				(*remove)();
 	int				map_size;
 	int				type;
@@ -59,7 +58,8 @@ t_hash				*get_hash_element(t_hashmap *table, void *key);
 void				*get_hash_value(t_hashmap *table, void *key);
 int					get_hash_size(t_hashmap *table);
 BOOLEAN				add_hash(t_hashmap *table, void *key, void *data);
-void				clear_hashtable(t_hashmap *table);
+void				clear_hashtable(t_hashmap *table,\
+					void (*keyfunc)(), void (*valuefunc)());
 BOOLEAN				remove_element_on_hashtable(t_hashmap *table, void *key);
 char				*tostring_hashtable(t_hashmap *map);
 void				foreach_hashtable(t_hashmap *table,\
@@ -72,7 +72,8 @@ void				foreach_hashtable(t_hashmap *table,\
 */
 t_hashmap			*newintegerhashmap(int size);
 t_hashmap			*newstringhashmap(int size);
-void				destruct_hashmap(t_hashmap *table);
+void				destruct_hashmap(t_hashmap *table,\
+					void (*keyfunc)(), void (*valuefunc)());
 
 # define FOREACH_MAP(map, func, arg) map->foreach(map, func, arg)
 #endif

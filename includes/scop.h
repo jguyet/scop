@@ -67,6 +67,8 @@ typedef struct		s_model
 	unsigned int	model_location;
 	unsigned int	material_location;
 	unsigned int	texture_diffuse_location;
+	unsigned int	color_location;
+	t_transform		transform;
 }					t_model;
 
 typedef struct		s_keyboard
@@ -96,13 +98,22 @@ typedef struct		s_scop
 {
 	SDL_Window		*window;
 	SDL_GLContext	*context;
-	t_hashmap		*models;
-	t_hashmap		*shaders;
+	t_model			*model;
+	t_shader		*shader;
 	t_mouse			*mouse;
 	t_keyboard		*keyboard;
 	t_camera		*camera;
 	t_screen		*screen;
+	t_hashmap		*properties;
+	BOOLEAN			texture;
+	long			last_time;
 }					t_scop;
+
+/*
+** PROPERTIES
+*/
+t_hashmap			*new_propeties(const char *file_path);
+void				destruct_properties(t_hashmap *prop);
 
 /*
 ** BMP
@@ -119,9 +130,10 @@ t_shader			*new_shader(const char *vertex_file_path,\
 */
 t_model				*new_model(const char *file_path, t_shader *shader);
 void				destruct_model(t_model *model);
+void				build_model(t_model *model, BOOLEAN texture);
 void				load_model_textures(t_model *model);
 void				build_model_shader(t_model *model);
-void				build_model_vao(t_model *model);
+void				build_model_vao(t_model *model, BOOLEAN texture);
 void				draw_model(t_model *model,\
 					t_matrix4f *m, t_matrix4f *v, t_matrix4f *p);
 

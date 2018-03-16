@@ -99,9 +99,10 @@ t_hashmap	*newstringhashmap(int size)
 ** HASHMAP __DESTRUCTOR
 */
 
-void		destruct_hashmap(t_hashmap *table)
+void		destruct_hashmap(t_hashmap *table,\
+	void (*keyfunc)(), void (*valuefunc)())
 {
-	table->clear(table);
+	table->clear(table, keyfunc, valuefunc);
 	free(table->hashtable);
 	free(table);
 }

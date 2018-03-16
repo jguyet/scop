@@ -110,9 +110,11 @@ t_matrix4f		*copy_matrix4f(t_matrix4f *origin);
 t_matrix4f		*matrix4f_mul(t_matrix4f *m, t_matrix4f *m2);
 t_vector3f		*apply_matrix4f_to_vertex(t_matrix4f *m, t_vector3f *v);
 t_vector4f		*apply_matrix4f_to_vertex4f(t_matrix4f *m, t_vector4f *src);
-t_matrix4f		*matrix4f_translate(t_vector3f *v);
+t_matrix4f		*matrix_translate(t_vector3f *v);
 t_matrix4f		*matrix_rotate(t_matrix4f *matrix, float angle,\
 				t_vector3f *type);
+t_matrix4f		*get_matrix_scale(t_vector3f *scale);
+t_matrix4f		*matrix_scale(t_matrix4f *matrix, t_vector3f *scale);
 
 /*
 **	Mathf

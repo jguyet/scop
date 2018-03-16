@@ -24,12 +24,14 @@ t_mesh		*new_mesh(char *name)
 	mesh->faces_i = newintegerhashmap(10);
 	mesh->vertexs = NULL;
 	mesh->normals = NULL;
+	mesh->colors = NULL;
 	mesh->texturecoords = NULL;
 	mesh->faces = NULL;
 	mesh->vertexs_length = 0;
 	mesh->normals_length = 0;
 	mesh->texturecoords_length = 0;
 	mesh->faces_length = 0;
+	mesh->colors_length = 0;
 	mesh->material = new_material("None");
 	mesh->current_face = NULL;
 	initialize_vector3f(&mesh->max);
@@ -122,6 +124,29 @@ void		mesh_add_texturecoord(t_mesh *mesh, float x, float y)
 	mesh->texturecoords_length++;
 }
 
+void		mesh_add_color(t_mesh *mesh, float x, float y, float z)
+{
+	int		i;
+	float	*color_array;
+
+	if (!(color_array = (float *)malloc(sizeof(float) *\
+		((mesh->colors_length + 1) * 3))))
+		return ;
+	i = 0;
+	while (i < (mesh->colors_length * 3))
+	{
+		color_array[i] = mesh->colors[i];
+		i++;
+	}
+	color_array[i + 0] = x;
+	color_array[i + 1] = y;
+	color_array[i + 2] = z;
+	if (mesh->colors != NULL)
+		free(mesh->colors);
+	mesh->colors = color_array;
+	mesh->colors_length++;
+}
+
 void		mesh_add_face(t_mesh *mesh, unsigned int v1,\
 	unsigned int v2, unsigned int v3)
 {
@@ -167,6 +192,7 @@ void		mesh_add_texture_position_indice(t_mesh *mesh, int id)
 t_face		*mesh_add_face_indice(t_mesh *mesh)
 {
 	t_face	*face;
+	float	r;
 
 	if (!(face = (struct s_face*)malloc(sizeof(struct s_face))))
 		return (NULL);
@@ -174,16 +200,37 @@ t_face		*mesh_add_face_indice(t_mesh *mesh)
 	face->normals = newintegerhashmap(1);
 	face->texturecoords = newintegerhashmap(1);
 	face->type = POLIGON_FACE;
+	r = 0.0f;
+	while (r < 0.1f || r > 0.3f)
+		r = (float)(rand() % 255) / 255.0f;
+	face->color.x = r;
+	face->color.y = r;
+	face->color.z = r;
 	mesh->faces_i->add(mesh->faces_i, mesh->faces_i->size, face);
 	return (face);
 }
 
+void		destruct_face(t_face *face)
+{
+	destruct_hashmap(face->vertexs, NULL, NULL);
+	destruct_hashmap(face->normals, NULL, NULL);
+	destruct_hashmap(face->texturecoords, NULL, NULL);
+	free(face);
+}
+
 void		destruct_mesh(t_mesh *mesh)
 {
-	ft_strdel(&mesh->name);
-	free(mesh->vertexs);
-	free(mesh->normals);
-	free(mesh->texturecoords);
+	free(mesh->name);
+	if (mesh->vertexs != NULL)
+		free(mesh->vertexs);
+	if (mesh->normals != NULL)
+		free(mesh->normals);
+	if (mesh->colors != NULL)
+		free(mesh->colors);
+	if (mesh->texturecoords != NULL)
+		free(mesh->texturecoords);
+	destruct_hashmap(mesh->faces_i, NULL, destruct_face);
 	free(mesh->faces);
+	//free(mesh->material);
 	free(mesh);
 }

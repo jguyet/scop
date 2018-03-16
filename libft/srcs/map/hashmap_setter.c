@@ -26,6 +26,8 @@ BOOLEAN		add_hash(t_hashmap *table, void *key, void *data)
 	if (!(new = (t_hash*)malloc(sizeof(struct s_hash))))
 		return (false);
 	new->key = key;
+	if (table->type == STRING_MAPFT)
+		new->key = ft_strdup(key);
 	new->data = data;
 	new->next = NULL;
 	new->prev = NULL;

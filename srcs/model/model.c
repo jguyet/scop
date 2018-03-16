@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jguyet <jguyet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/10 16:22:39 by jguyet            #+#    #+#             */
-/*   Updated: 2018/03/10 16:27:25 by jguyet           ###   ########.fr       */
+/*   Created: 2018/03/16 05:11:38 by jguyet            #+#    #+#             */
+/*   Updated: 2018/03/16 05:11:40 by jguyet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@ t_model			*new_model(const char *file_path, t_shader *shader)
 
 	if (!(m = (struct s_model*)malloc(sizeof(struct s_model))))
 		return (NULL);
+	initialize_transform(&m->transform);
+	m->transform.scale.x = 1.0f;
+	m->transform.scale.y = 1.0f;
+	m->transform.scale.z = 1.0f;
 	m->shader = shader;
 	m->glewglew = new_glewglew();
 	m->glewglew->initializer.absolute_path = file_absolute_path(file_path);
@@ -29,16 +33,21 @@ t_model			*new_model(const char *file_path, t_shader *shader)
 		return (NULL);
 	}
 	free(base_name);
-	load_model_textures(m);
-	build_model_shader(m);
-	build_model_vao(m);
+	build_model(m, true);
 	return (m);
+}
+
+void			build_model(t_model *model, BOOLEAN texture)
+{
+	if (texture == true)
+		load_model_textures(model);
+	build_model_shader(model);
+	build_model_vao(model, texture);
 }
 
 void			destruct_model(t_model *model)
 {
 	destruct_glewglew(model->glewglew);
-	free(model->shader);
 	free(model);
 }
 
@@ -51,6 +60,7 @@ void			load_model_textures(t_model *model)
 	while (++i < model->glewglew->meshs_size)
 	{
 		mesh = model->glewglew->meshs[i];
+
 		if (mesh->material->block.diffuse_texture)
 		{
 			mesh->material->diffuse_texture_id =\
@@ -65,6 +75,8 @@ void			build_model_shader(t_model *model)
 	glGetAttribLocation(model->shader->id, "a_v");
 	model->texture_location = \
 	glGetAttribLocation(model->shader->id, "a_vt");
+	model->color_location = \
+	glGetAttribLocation(model->shader->id, "a_color");
 	model->projection_location = \
 	glGetUniformLocation(model->shader->id, "u_projMatrix");
 	model->view_location = \
@@ -99,7 +111,27 @@ void			add_uniform_buffer(void *structure,\
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-void			build_vao(t_model *model, t_mesh *mesh)
+void			build_material_buffer(t_model *model,\
+	t_mesh *mesh, BOOLEAN texture)
+{
+	BOOLEAN has_texture;
+
+	(void)model;
+	has_texture = false;
+	if (texture && mesh->material->block.diffuse_texture)
+	{
+		has_texture = true;
+		mesh->material->block.diffuse_texture = false;
+	}
+	add_uniform_buffer((void*)&mesh->material->block,\
+	sizeof(struct s_material_gl), &mesh->material_buffer_block_location);
+	if (has_texture)
+	{
+		mesh->material->block.diffuse_texture = true;
+	}
+}
+
+void			build_vao(t_model *model, t_mesh *mesh, BOOLEAN texture)
 {
 	GLuint	buffer;
 
@@ -122,19 +154,24 @@ void			build_vao(t_model *model, t_mesh *mesh)
 			sizeof(float) * (2 * mesh->texturecoords_length), 2,\
 			model->texture_location);
 	}
+	if (mesh->colors_length > 0)
+	{
+		add_array_to_buffer_element(&mesh->colors[0],\
+			sizeof(float) * (3 * mesh->colors_length), 3,\
+			model->color_location);
+	}
 	glBindVertexArray(0);
-	add_uniform_buffer((void*)&mesh->material->block,\
-	sizeof(struct s_material_gl), &mesh->material_buffer_block_location);
+	build_material_buffer(model, mesh, texture);
 }
 
-void			build_model_vao(t_model *model)
+void			build_model_vao(t_model *model, BOOLEAN texture)
 {
 	int		i;
 
 	i = 0;
 	while (i < model->glewglew->meshs_size)
 	{
-		build_vao(model, model->glewglew->meshs[i]);
+		build_vao(model, model->glewglew->meshs[i], texture);
 		i++;
 	}
 }
