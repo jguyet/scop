@@ -67,44 +67,6 @@ void			draw_scene(t_scop *s, t_model *model, t_matrix4f *tmp_matrix)
 	destruct_matrix4f(tmp_matrix);
 }
 
-void			scene_control_two(t_scop *s, t_model *model)
-{
-	if (get_key(s->keyboard, 40) && time(NULL) > (s->last_time + 1))
-	{
-		s->texture = !s->texture;
-		build_model(model, s->texture);
-		s->last_time = time(NULL);
-	}
-	if (get_key(s->keyboard, 21))
-		model->transform.rotation.x += 1.0f;
-	if (get_key(s->keyboard, 23))
-		model->transform.rotation.y += 1.0f;
-	if (get_key(s->keyboard, 28))
-		model->transform.rotation.z += 1.0f;
-}
-
-void			scene_control(t_scop *s, t_model *model)
-{
-	if (get_key(s->keyboard, 81))
-		s->camera->transform.position.x += 0.1f;
-	if (get_key(s->keyboard, 82))
-		s->camera->transform.position.x -= 0.1f;
-	if (get_key(s->keyboard, 80))
-		s->camera->transform.position.z += 0.1f;
-	if (get_key(s->keyboard, 79))
-		s->camera->transform.position.z -= 0.1f;
-	if (get_key(s->keyboard, 44))
-		s->camera->transform.position.y += 0.1f;
-	if (get_key(s->keyboard, 94))
-		model->transform.position.z -= 0.1f;
-	if (get_key(s->keyboard, 92))
-		model->transform.position.z += 0.1f;
-	if (get_key(s->keyboard, 96))
-		model->transform.position.x -= 0.1f;
-	if (get_key(s->keyboard, 90))
-		model->transform.position.x += 0.1f;
-}
-
 void			render_loop(t_scop *s)
 {
 	SDL_Event	event;
@@ -115,8 +77,7 @@ void			render_loop(t_scop *s)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
 		draw_scene(s, s->model, NULL);
-		scene_control(s, s->model);
-		scene_control_two(s, s->model);
+		loop_control(s, s->model);
 		if (get_key(s->keyboard, 41))
 			return ;
 		while (SDL_PollEvent(&event))
@@ -126,6 +87,5 @@ void			render_loop(t_scop *s)
 				return ;
 			}
 		}
-		//s->model->transform.rotation.y += 1.f;
 	}
 }

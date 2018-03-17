@@ -24,8 +24,6 @@ void	glewglew_build_lexer_obj_methods(t_glewglew *g)
 	g->initializer.lexer_obj->add(\
 		g->initializer.lexer_obj, "vt", &mesh_parser_add_texture_position);
 	g->initializer.lexer_obj->add(\
-		g->initializer.lexer_obj, "vn", &mesh_parser_add_normal);
-	g->initializer.lexer_obj->add(\
 		g->initializer.lexer_obj, "f", &mesh_parser_add_face);
 	g->initializer.lexer_obj->add(\
 		g->initializer.lexer_obj, "mtllib", &mesh_parser_add_material);
@@ -88,11 +86,7 @@ int		glewglew_build_material(t_glewglew *g, const char *filename)
 	g->initializer.lexer_material->add(\
 		g->initializer.lexer_material, "newmtl", &material_parser_new_material);
 	g->initializer.lexer_material->add(\
-		g->initializer.lexer_material, "Ka", &material_parser_add_ambiante);
-	g->initializer.lexer_material->add(\
 		g->initializer.lexer_material, "Kd", &material_parser_add_diffuse);
-	g->initializer.lexer_material->add(\
-		g->initializer.lexer_material, "Ks", &material_parser_add_specular);
 	g->initializer.lexer_material->add(\
 		g->initializer.lexer_material, "map_Kd",\
 		&material_parser_add_diffuse_texture);

@@ -32,35 +32,15 @@ void			initialize_material(t_material *material)
 	material->block.diffuse[1] = 0.0f;
 	material->block.diffuse[2] = 0.0f;
 	material->block.diffuse[3] = 1.0f;
-	material->block.ambiante[0] = 0.0f;
-	material->block.ambiante[1] = 0.0f;
-	material->block.ambiante[2] = 0.0f;
-	material->block.ambiante[3] = 1.0f;
-	material->block.specular[0] = 0.0f;
-	material->block.specular[1] = 0.0f;
-	material->block.specular[2] = 0.0f;
-	material->block.specular[3] = 1.0f;
-	material->block.emission[0] = 0.0f;
-	material->block.emission[1] = 0.0f;
-	material->block.emission[2] = 0.0f;
-	material->block.emission[3] = 1.0f;
-	material->block.shininess = 0.0f;
-	material->block.diffuse_texture = false;
-	material->block.specular_texture = false;
-	material->block.ambiante_texture = false;
-	material->diffuse_texture = NULL;
-	material->specular_texture = NULL;
-	material->ambiante_texture = NULL;
+	material->block.diffuse_texture = true;
+	material->block.has_texture_position = false;
+	material->diffuse_texture = ft_strdup("assets/poney.bmp");
 }
 
 void			destruct_material(t_material *material)
 {
 	if (material->diffuse_texture != NULL)
 		free(material->diffuse_texture);
-	if (material->specular_texture != NULL)
-		free(material->specular_texture);
-	if (material->ambiante_texture != NULL)
-		free(material->ambiante_texture);
 	free(material->name);
 	free(material);
 }

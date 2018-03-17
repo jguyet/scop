@@ -42,18 +42,3 @@ float			v2f_sqrt(t_vector2f *v)
 {
 	return (v->x * v->x + v->y * v->y);
 }
-
-float			v2f_magnitude(t_vector2f *v)
-{
-	return ((float)sqrt(v2f_sqrt(v)));
-}
-
-t_vector2f		*v2f_normalize(t_vector2f *v)
-{
-	float mag;
-
-	mag = v2f_magnitude(v);
-	v->x /= mag;
-	v->y /= mag;
-	return (v);
-}

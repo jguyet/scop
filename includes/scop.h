@@ -69,12 +69,16 @@ typedef struct		s_model
 	unsigned int	texture_diffuse_location;
 	unsigned int	color_location;
 	t_transform		transform;
+	float			iterator;
+	unsigned int	iterator_location;
+	unsigned int	draw_mode;
 }					t_model;
 
 typedef struct		s_keyboard
 {
 	void			(*handle_event)(struct s_keyboard*, SDL_Event *);
 	BOOLEAN			pressedkeys[301];
+	BOOLEAN			downkeys[301];
 }					t_keyboard;
 
 typedef struct		s_mouse
@@ -106,7 +110,8 @@ typedef struct		s_scop
 	t_screen		*screen;
 	t_hashmap		*properties;
 	BOOLEAN			texture;
-	long			last_time;
+	char			*model_path;
+	BOOLEAN			rotate;
 }					t_scop;
 
 /*
@@ -130,10 +135,10 @@ t_shader			*new_shader(const char *vertex_file_path,\
 */
 t_model				*new_model(const char *file_path, t_shader *shader);
 void				destruct_model(t_model *model);
-void				build_model(t_model *model, BOOLEAN texture);
-void				load_model_textures(t_model *model);
+void				build_model(t_model *model);
+void				build_model_textures(t_model *model);
 void				build_model_shader(t_model *model);
-void				build_model_vao(t_model *model, BOOLEAN texture);
+void				build_model_vao(t_model *model);
 void				draw_model(t_model *model,\
 					t_matrix4f *m, t_matrix4f *v, t_matrix4f *p);
 
@@ -154,6 +159,7 @@ void				mouse_button_event_handler(t_mouse *mouse,\
 t_keyboard			*new_keyboard(void);
 void				destruct_keyboard(t_keyboard *keyboard);
 BOOLEAN				get_key(t_keyboard *keyboard, unsigned int key);
+BOOLEAN				get_keydown(t_keyboard *keyboard, unsigned int key);
 void				keyboard_event_handler(t_keyboard *keyboard,\
 					SDL_Event *event);
 
@@ -180,6 +186,7 @@ void				load_shaders(t_scop *scop);
 void				load_inputs(t_scop *scop);
 void				load_camera(t_scop *s);
 void				render_loop(t_scop *s);
+void				loop_control(t_scop *s, t_model *model);
 void				destruct_context(t_scop *s);
 void				destruct_window(t_scop *s);
 

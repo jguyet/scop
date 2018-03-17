@@ -48,42 +48,6 @@ void	material_parser_add_diffuse(t_glewglew *g, char *line)
 	free_array(split);
 }
 
-void	material_parser_add_ambiante(t_glewglew *g, char *line)
-{
-	char		**split;
-
-	if (g->current_material == NULL)
-		return ;
-	split = ft_split_string(line, " ");
-	if (array_length(split) == 4)
-	{
-		g->current_material->block.ambiante[0] = atof(split[1]);
-		g->current_material->block.ambiante[1] = atof(split[2]);
-		g->current_material->block.ambiante[2] = atof(split[3]);
-		g->current_material->block.ambiante[3] = 1.0f;
-		ft_printf("ambient (%s,%s,%s)\n", split[1], split[2], split[3]);
-	}
-	free_array(split);
-}
-
-void	material_parser_add_specular(t_glewglew *g, char *line)
-{
-	char		**split;
-
-	if (g->current_material == NULL)
-		return ;
-	split = ft_split_string(line, " ");
-	if (array_length(split) == 4)
-	{
-		g->current_material->block.specular[0] = atof(split[1]);
-		g->current_material->block.specular[1] = atof(split[2]);
-		g->current_material->block.specular[2] = atof(split[3]);
-		g->current_material->block.specular[3] = 1.0f;
-		ft_printf("specular (%s,%s,%s)\n", split[1], split[2], split[3]);
-	}
-	free_array(split);
-}
-
 void	material_parser_add_diffuse_texture(t_glewglew *g, char *line)
 {
 	char		**split;
@@ -93,44 +57,12 @@ void	material_parser_add_diffuse_texture(t_glewglew *g, char *line)
 	split = ft_split_string(line, " ");
 	if (array_length(split) == 2)
 	{
+		if (g->current_material->diffuse_texture != NULL)
+			free(g->current_material->diffuse_texture);
 		g->current_material->diffuse_texture = \
 		ft_dstrjoin(g->initializer.absolute_path, ft_strdup(split[1]), 2);
 		g->current_material->block.diffuse_texture = true;
 		ft_printf("diffuse texture \"%s\"\n", split[1]);
-	}
-	free_array(split);
-}
-
-void	material_parser_add_specular_texture(t_glewglew *g, char *line)
-{
-	char		**split;
-
-	if (g->current_material == NULL)
-		return ;
-	split = ft_split_string(line, " ");
-	if (array_length(split) == 2)
-	{
-		g->current_material->specular_texture = \
-		ft_dstrjoin(g->initializer.absolute_path, ft_strdup(split[1]), 2);
-		g->current_material->block.specular_texture = true;
-		ft_printf("specular texture \"%s\"\n", split[1]);
-	}
-	free_array(split);
-}
-
-void	material_parser_add_ambient_texture(t_glewglew *g, char *line)
-{
-	char		**split;
-
-	if (g->current_material == NULL)
-		return ;
-	split = ft_split_string(line, " ");
-	if (array_length(split) == 2)
-	{
-		g->current_material->ambiante_texture = \
-		ft_dstrjoin(g->initializer.absolute_path, ft_strdup(split[1]), 2);
-		g->current_material->block.ambiante_texture = true;
-		ft_printf("ambient texture \"%s\"\n", split[1]);
 	}
 	free_array(split);
 }

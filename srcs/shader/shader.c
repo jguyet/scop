@@ -30,7 +30,8 @@ static BOOLEAN			compile_source_shader(unsigned int source_id,\
 			return (false);
 		bzero(logs, log_length);
 		glGetShaderInfoLog(source_id, log_length, &log_length, logs);
-		ft_fprintf(2, "Erreur de compilation:\n%s", logs);
+		if (ft_strlen(logs) > 0)
+			ft_fprintf(2, "Erreur de compilation:\n%s", logs);
 		free(logs);
 	}
 	return (result);
@@ -55,7 +56,8 @@ static BOOLEAN			build_shader_program(t_shader *shader)
 			return (false);
 		bzero(logs, log_length);
 		glGetShaderInfoLog(shader->id, log_length, &log_length, logs);
-		ft_fprintf(2, "Erreur de compilation:\n%s", logs);
+		if (ft_strlen(logs) > 0)
+			ft_fprintf(2, "Erreur de compilation:\n%s", logs);
 		free(logs);
 	}
 	glDetachShader(shader->id, shader->vertex_shader_id);

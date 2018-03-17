@@ -124,6 +124,7 @@ SRCBASE		=	\
 				string/file_get_contents.c 					\
 				file/file_absolute_path.c					\
 				file/file_base_name.c						\
+				file/file_exists.c							\
 				printf/add/add_char.c						\
 				printf/add/add_string.c						\
 				printf/add/add_wchar.c						\

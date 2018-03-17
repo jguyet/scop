@@ -69,7 +69,7 @@ void		load_model_scale(t_scop *scop, t_model *model)
 void		load_models(t_scop *scop)
 {
 	scop->model = new_model(\
-		scop->properties->get(scop->properties, "scop.model.path"),\
+		scop->model_path,\
 		scop->shader);
 	load_model_position(scop, scop->model);
 	load_model_rotation(scop, scop->model);

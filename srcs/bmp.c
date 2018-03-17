@@ -64,11 +64,6 @@ BOOLEAN		build_data(t_bmp *bmp, FILE *file)
 		bmp->imagesize = bmp->width * bmp->height * 3;
 	if (bmp->datapos == 0)
 		bmp->datapos = 54;
-	if (bmp->width % 2 != 0 || bmp->height % 2 != 0)
-	{
-		ft_printf("Warning strange image size: %d %d \n",\
-		bmp->width, bmp->height);
-	}
 	bmp->data = (unsigned char*)malloc(bmp->imagesize);
 	if (!bmp->data)
 		return (0);

@@ -25,7 +25,8 @@ t_scop				*new_scop(void)
 	s->shader = NULL;
 	s->screen = new_screen(1280, 1280);
 	s->texture = true;
-	s->last_time = 0;
+	s->rotate = true;
+	s->model_path = ft_strdup("assets/42.obj");
 	s->properties = new_propeties("scop.properties");
 	return (s);
 }
@@ -35,28 +36,27 @@ t_scop				*static_scop(void)
 	return (new_scop());
 }
 
-void				destruct_scop(t_scop *scop)
+void				load_args(t_scop *scop, int argc, char **argv)
 {
-	destruct_properties(scop->properties);
-	if (scop->model != NULL)
-		destruct_model(scop->model);
-	if (scop->screen != NULL)
-		destruct_screen(scop->screen);
-	if (scop->shader != NULL)
-		free(scop->shader);
-	free(scop);
+	if (argc != 2)
+		return ;
+	free(scop->model_path);
+	scop->model_path = ft_strdup(argv[1]);
 }
 
 int					main(int argc, char **argv)
 {
 	t_scop	*scop;
 
-	(void)argc;
-	(void)argv;
-	srand(time(NULL));
 	scop = static_scop();
 	build_window(scop);
 	build_context(scop);
+	load_args(scop, argc, argv);
+	if (file_exists(scop->model_path) == false)
+	{
+		ft_fprintf(2, "File \"%s\"doesn't exists\n", scop->model_path);
+		return (1);
+	}
 	load_shaders(scop);
 	load_models(scop);
 	load_inputs(scop);
@@ -64,6 +64,5 @@ int					main(int argc, char **argv)
 	render_loop(scop);
 	destruct_context(scop);
 	destruct_window(scop);
-	destruct_scop(scop);
 	return (0);
 }

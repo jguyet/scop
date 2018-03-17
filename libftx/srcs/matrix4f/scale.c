@@ -12,7 +12,7 @@
 
 #include "libftx.h"
 
-static t_matrix4f   *init_scale(float x, float y, float z)
+static t_matrix4f	*init_scale(float x, float y, float z)
 {
 	t_matrix4f	*m;
 
@@ -36,20 +36,20 @@ static t_matrix4f   *init_scale(float x, float y, float z)
 	return (m);
 }
 
-t_matrix4f		*get_matrix_scale(t_vector3f *scale)
+t_matrix4f			*get_matrix_scale(t_vector3f *scale)
 {
 	t_matrix4f *scaling;
 
-	scaling = init_scale(scale->x, scale->y, scale->x);
+	scaling = init_scale(scale->x, scale->y, scale->z);
 	return (scaling);
 }
 
-t_matrix4f		*matrix_scale(t_matrix4f *matrix, t_vector3f *scale)
+t_matrix4f			*matrix_scale(t_matrix4f *matrix, t_vector3f *scale)
 {
 	t_matrix4f *scaling;
 	t_matrix4f *dst;
 
-	scaling = init_scale(scale->x, scale->y, scale->x);
+	scaling = init_scale(scale->x, scale->y, scale->z);
 	dst = matrix4f_mul(matrix, scaling);
 	destruct_matrix4f(scaling);
 	destruct_matrix4f(matrix);

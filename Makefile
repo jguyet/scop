@@ -60,6 +60,7 @@ SRCSPROG1		=	\
 					srcs/scop/context.c											\
 					srcs/scop/screen.c											\
 					srcs/scop/loop.c											\
+					srcs/scop/loop_control.c									\
 					srcs/scop/load_shaders.c									\
 					srcs/scop/load_models.c										\
 					srcs/scop/load_inputs.c										\
@@ -69,11 +70,17 @@ SRCSPROG1		=	\
 					srcs/graphic/key/mouse.c									\
 					srcs/shader/shader.c										\
 					srcs/model/model.c											\
+					srcs/model/model_build_textures.c							\
+					srcs/model/model_build_shader.c								\
+					srcs/model/model_build_vao.c								\
 					srcs/bmp.c													\
 					srcs/glewglew/glewglew.c									\
+					srcs/glewglew/glewglew_two.c								\
 					srcs/glewglew/glewglew_builder.c							\
 					srcs/glewglew/glewglew_mesh.c								\
+					srcs/glewglew/glewglew_mesh_setters.c						\
 					srcs/glewglew/glewglew_mesh_parser.c						\
+					srcs/glewglew/glewglew_mesh_parser_two.c					\
 					srcs/glewglew/glewglew_material_parser.c					\
 					srcs/glewglew/glewglew_material.c							\
 					srcs/glewglew/glewglew_recenter.c

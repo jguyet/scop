@@ -32,12 +32,16 @@ SRCBASE		=	\
 				mathf/ft_radians.c						\
 				mathf/ft_clamp.c						\
 				matrix4f/matrix4f.c						\
+				matrix4f/matrix4f_.c					\
 				matrix4f/rotate.c						\
 				matrix4f/scale.c						\
 				matrix4f/translate.c					\
 				vector2f/vector2f.c						\
+				vector2f/vector2f_.c					\
 				vector3f/vector3f.c						\
+				vector3f/vector3f_.c					\
 				vector4f/vector4f.c						\
+				vector4f/vector4f_.c					\
 				transform/transform.c					\
 				camera/look_at.c						\
 				camera/perspective.c					\

@@ -173,6 +173,7 @@ void				free_array_type(void **array,\
 */
 char				*file_base_name(const char *file_path);
 char				*file_absolute_path(const char *file_path);
+BOOLEAN				file_exists(const char *filename);
 
 # define ___N0		STDERR_FILENO, "{bold}{red}ERROR{white} %s:%i:{reset}\t"
 # define ___N1		__FILE__, __LINE__

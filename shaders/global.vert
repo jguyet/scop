@@ -10,6 +10,7 @@ uniform mat4 u_modelMatrix;
 
 out vec2 v_vt;
 out vec3 v_color;
+out vec2 v_vt_plane;
 
 void main()
 {
@@ -17,5 +18,6 @@ void main()
 
 	v_vt = a_vt;
 	v_color = a_color;
+	v_vt_plane = vec3(vec3(a_v.xyz) / 2).zy * 3;
 	gl_Position = mpos;
 }

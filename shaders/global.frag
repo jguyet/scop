@@ -2,33 +2,44 @@
 
 uniform u_material {
 	vec4 diffuse;
-	vec4 ambient;
-	vec4 specular;
-	vec4 emissive;
-	float shininess;
-	bool diffuse_texture;
-	bool specular_texture;
-	bool ambiante_texture;
+	bool has_diffuse_texture;
+	bool has_texture_position;
 };
 
 uniform	sampler2D u_texture_diffuse;
+uniform	float u_iterator;
 
 in vec2 v_vt;
 in vec3	v_color;
+in vec2 v_vt_plane;
 
 out vec4 o_color;
 
 void main()
 {
-	vec4 color;
+	vec3	diffuse_color;
+	vec3	diffuse_texture_color;
+	vec4	color;
+	vec3	tmp;
+	float	it = (1 - u_iterator);
 
-	if (diffuse_texture == true)
+	if (has_texture_position == false)
 	{
-		color = vec4(texture(u_texture_diffuse, v_vt.st).rgb, 1);
+		diffuse_texture_color = texture(u_texture_diffuse, v_vt_plane.st).rgb;
 	}
 	else
 	{
-		color = vec4(v_color.xyz, 1.0);
+		diffuse_texture_color = texture(u_texture_diffuse, v_vt.st).rgb;
 	}
+	diffuse_color = vec3(v_color.xyz);
+	if (it < 1)
+	{
+		tmp = diffuse_color * u_iterator;
+	}
+	if (it > 0)
+	{
+		tmp += diffuse_texture_color * (1 - u_iterator);
+	}
+	color = vec4(tmp, 1);
 	o_color = color;
 }
